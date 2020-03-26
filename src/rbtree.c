@@ -522,3 +522,10 @@ void inorder(RBNODE n, void(*func)(RBNODE)) {
 void print_tree(RBTREE tree, void(*func)(RBNODE)) {
     inorder(tree->root, func);
 }
+
+//
+// See https://www.cs.cmu.edu/~guyb/papers/BFS16.pdf for more on
+// joining red black trees (as well as other balancing trees).
+//
+
+// void rb_join_right() {}

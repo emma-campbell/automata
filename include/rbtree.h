@@ -52,13 +52,86 @@ struct rb_tree {
 typedef struct rb_tree *RBTREE;
 
 extern RBTREE rb_create(cmp_func_t cmp);
+
+//
+// Basic Operations
+//
+
+/**
+ * @brief Insert a item into the RB Tree.
+ * @param tree Pointer to the tree
+ * @param key Pointer to the item
+ * @returns {@code 1} if successful, false otherwise.
+ */
 extern int rb_insert(RBTREE tree, void *key);
+
+/**
+ * @brief Remove an item from the tree
+ * @param tree Pointer to the tree
+ * @param key Item to remove from the tree
+ * @returns the key if it exists, otherwise {@code NULL}.
+ */
 extern void* rb_remove(RBTREE tree, const void* key);
 
+/**
+ * @brief Clear the allocated storage for the tree
+ * @param tree Tree to be destroyed
+ */
+extern void rb_destroy(RBTREE tree);
+
+/**
+ * @brief Prints the elements in the tree by iterating through
+ *        the elements and calling the function pointer *func on
+ *        each node.
+ * 
+ * Using a function pointer means that we can call print and 
+ * specify the data type that is being printed.
+ * 
+ * @param tree Pointer to the tree
+ * @param func Pointer to the print function.
+ */
 extern void print_tree(RBTREE tree, void (*func)(RBNODE));
+
+
+//
+// Traversal Operations
+//
+
+/**
+ * @brief Iterates through the tree in level order
+ * @param n Root node
+ * @param func Function applied to each node
+ */
 extern void levelorder(RBNODE n, void (*func)(RBNODE));
+
+/**
+ * @brief Recurses through the tree in preorder
+ * @param n Root node
+ * @param func Function applied to each node
+ */
 extern void preorder(RBNODE n, void (*func)(RBNODE));
+
+/**
+ * @brief Recurses through the tree in postorder
+ * @param n Root node
+ * @param func Function applied to each node
+ */
 extern void postorder(RBNODE n, void (*func)(RBNODE));
+
+/**
+ * @brief Recurses through the tree in inorder
+ * @param n Root node
+ * @param func Function applied to each node
+ */
 extern void inorder(RBNODE n, void (*func)(RBNODE));
+
+//
+// Set Operations
+//
+// TODO: Implement RB Set Operations
+
+// extern RBTREE rb_join(RBTREE t1, RBTREE t2);
+// extern RBTREE rb_union(RBTREE t1, RBTREE t2);
+// extern RBTREE rb_intersection(RBTREE t1, RBTREE t2);
 
 #endif // _RBTREE_h

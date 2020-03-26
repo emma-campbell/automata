@@ -12,7 +12,7 @@ struct set_t {
 typedef set_t *Set;
 
 extern Set set_create(cmp_func_t cmp_func);
-    
+extern void set_destroy(Set s);
 extern void set_insert(Set s, void *data);
 extern void set_remove(Set s, void *data);
 
