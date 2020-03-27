@@ -1,6 +1,8 @@
 #include <rbtree.h>
 #include <stdlib.h>
 
+#include <stdio.h>
+
 // Node Helpers
 //
 // NOTE -- All these functions are hidden to the user
@@ -107,8 +109,8 @@ void rotate_right(RBNODE n)
     nnew->parent = p;
 }
 
-
-RBTREE rb_create(cmp_func_t cmp) {
+RBTREE rb_create(cmp_func_t cmp)
+{
     RBTREE tree = malloc(sizeof(struct rb_tree));
     assert(tree);
 
@@ -117,8 +119,20 @@ RBTREE rb_create(cmp_func_t cmp) {
     return tree;
 }
 
+void free_node(RBNODE n)
+{
+    free(n);
+}
+
+void rb_destroy(RBTREE tree)
+{
+    RBNODE tmp = tree->root;
+    postorder(tmp, free_node);
+    free(tree);
+}
+
 //
-// These are all the insertion helpers
+// Declaring the insertion helpers
 void insert_case_1(RBNODE n);
 void insert_case_2(RBNODE n);
 void insert_case_3(RBNODE n);
@@ -126,10 +140,13 @@ void insert_case_4(RBNODE n);
 void __repair_insert(RBNODE n);
 
 //
-// Theses do the actual insertion
+// These do the insertions from a root node
 RBNODE insert(RBNODE root, RBNODE n, cmp_func_t cmp);
 void insert_recursive(RBNODE root, RBNODE n, cmp_func_t cmp);
 
+//
+// All this function does wrap `insert` so that you can call it just 
+// using the tree structure
 int rb_insert(RBTREE tree, void *key)
 {
     RBNODE new_node = node_create(key);
@@ -258,150 +275,32 @@ void insert_case_3(RBNODE n)
     case_3_helper(n);
 };
 
-//
-//
-// Removal helpers
-void delete_case_1(RBNODE n);
-void delete_case_2(RBNODE n);
-void delete_case_3(RBNODE n);
-void delete_case_4(RBNODE n);
-void delete_case_5(RBNODE n);
-void delete_case_6(RBNODE n);
 
-void replace_node(RBNODE n, RBNODE other)
+RBNODE find_node(RBNODE root, void *key, cmp_func_t cmp)
 {
-    other->parent = n->parent;
-    if (n == n->parent->left)
-    {
-        n->parent->left = other;
-    }
+    if (root == NULL)
+        return NULL;
+
+    int cmp_val = cmp(root->key, key);
+
+    if (cmp_val == 0)
+        return root;
+    else if (cmp_val < 0)
+        return find_node(root->right, key, cmp);
     else
-    {
-        n->parent->right = other;
-    }
+        return find_node(root->left, key, cmp);
 }
 
-void delete_child(RBNODE n)
+RBNODE rb_find(RBTREE tree, void *key)
 {
-    // Assumes that n has, at most, one non-leaf child.
-    RBNODE child = (n->right == NULL) ? n->left : n->right;
-    assert(child);
-
-    replace_node(n, child);
-
-    if (n->color == BLACK)
-    {
-        if (child->color == RED)
-        {
-            child->color = BLACK;
-        }
-        else
-        {
-            delete_case_1(child);
-        }
-    }
-    free(n);
+    return find_node(tree->root, key, tree->cmp);
 }
 
-void delete_case_1(RBNODE n)
-{
-    if (n->parent != NULL)
-        delete_case_2(n);
-}
 
-void delete_case_2(RBNODE n)
-{
-    RBNODE s = get_sibling_node(n);
-
-    if (s->color == RED)
-    {
-        n->parent->color = RED;
-        s->color = BLACK;
-        if (n == n->parent->left)
-        {
-            rotate_left(n->parent);
-        }
-        else
-        {
-            rotate_right(n->parent);
-        }
-    }
-
-    delete_case_3(n);
-}
-
-void delete_case_3(RBNODE n)
-{
-    RBNODE s = get_sibling_node(n);
-
-    if ((n->parent->color == BLACK) && (s->color == BLACK) && (s->left->color == BLACK) && (s->right->color == BLACK))
-    {
-        s->color = BLACK;
-        delete_case_1(n->parent);
-    }
-    else
-    {
-        delete_case_4(n);
-    }
-}
-
-void delete_case_4(RBNODE n)
-{
-    RBNODE s = get_sibling_node(n);
-
-    if ((n->parent->color == RED) && (s->color == BLACK) && (s->left->color == BLACK) && (s->right->color == BLACK))
-    {
-        s->color = RED;
-        n->parent->color = BLACK;
-    }
-    else
-    {
-        delete_case_5(n);
-    }
-}
-
-void delete_case_5(RBNODE n)
-{
-    RBNODE s = get_sibling_node(n);
-
-    if (s->color == BLACK)
-    {
-        if ((n == n->parent->left) && (s->right->color == BLACK) &&
-            (s->left->color == RED))
-        {
-            s->color = RED;
-            s->left->color = BLACK;
-            rotate_right(s);
-        }
-        else if ((n == n->parent->right) && (s->left->color == BLACK) && (s->right->color == RED))
-        {
-            s->color = RED;
-            s->right->color = BLACK;
-            rotate_left(s);
-        }
-    }
-
-    delete_case_6(n);
-}
-
-void delete_case_6(RBNODE n)
-{
-    RBNODE s = get_sibling_node(n);
-
-    s->color = n->parent->color;
-    n->parent->color = BLACK;
-
-    if (n == n->parent->left)
-    {
-        s->right->color = BLACK;
-        rotate_left(n->parent);
-    }
-    else
-    {
-        s->left->color = BLACK;
-        rotate_right(n->parent);
-    }
-}
+// void rb_remove(RBTREE t, void *key)
+// {
+//     return;
+// }
 
 //
 // QUEUE
@@ -410,7 +309,8 @@ void delete_case_6(RBNODE n)
 //
 ////////////////////////////////////////////////////////////////
 
-struct Queue {
+struct Queue
+{
     RBNODE data;
     struct Queue *next;
 };
@@ -418,20 +318,23 @@ struct Queue {
 struct Queue *front = NULL;
 struct Queue *rear = NULL;
 
-RBNODE pop_front() {
+RBNODE pop_front()
+{
     RBNODE data = NULL;
     data = front->data;
     return data;
 }
 
-int isempty() {
+int isempty()
+{
     if (front == NULL)
         return 1;
     else
         return 0;
 }
 
-void dequeue() {
+void dequeue()
+{
     if (isempty())
         return;
 
@@ -440,12 +343,14 @@ void dequeue() {
     free(tmp);
 }
 
-void enqueue(RBNODE data) {
+void enqueue(RBNODE data)
+{
     struct Queue *tmp = (struct Queue *)malloc(sizeof(struct Queue));
     tmp->data = data;
     tmp->next = NULL;
 
-    if (front == NULL && rear == NULL) {
+    if (front == NULL && rear == NULL)
+    {
         front = rear = tmp;
         return;
     }
@@ -454,14 +359,16 @@ void enqueue(RBNODE data) {
     rear = tmp;
 }
 
-void levelorder(RBNODE root, void(*func)(RBNODE)) {
+void levelorder(RBNODE root, void (*func)(RBNODE))
+{
 
     if (root == NULL)
         return;
 
     enqueue(root);
 
-    while (!isempty()) {
+    while (!isempty())
+    {
         RBNODE curr = pop_front();
         func(curr);
 
@@ -475,51 +382,64 @@ void levelorder(RBNODE root, void(*func)(RBNODE)) {
     }
 }
 
-void preorder(RBNODE n, void (*func)(RBNODE)) {
-    if (n == NULL) {
+void preorder(RBNODE n, void (*func)(RBNODE))
+{
+    if (n == NULL)
+    {
         return;
     }
 
     func(n);
 
-    if (n->left != NULL) {
+    if (n->left != NULL)
+    {
         preorder(n->left, func);
     }
 
-    if (n->right != NULL) {
+    if (n->right != NULL)
+    {
         preorder(n->right, func);
     }
 }
 
-void postorder(RBNODE n, void(*func)(RBNODE)) {
-    if (n == NULL) return;
+void postorder(RBNODE n, void (*func)(RBNODE))
+{
+    if (n == NULL)
+        return;
 
-    if (n->left != NULL) {
+    if (n->left != NULL)
+    {
         postorder(n->left, func);
     }
 
-    if (n->right != NULL) {
+    if (n->right != NULL)
+    {
         postorder(n->right, func);
     }
 
     func(n);
 }
 
-void inorder(RBNODE n, void(*func)(RBNODE)) {
-    if (n == NULL) return;
+void inorder(RBNODE n, void (*func)(RBNODE))
+{
+    if (n == NULL)
+        return;
 
-    if (n->left != NULL) {
+    if (n->left != NULL)
+    {
         inorder(n->left, func);
     }
 
     func(n);
 
-    if (n->right != NULL) {
+    if (n->right != NULL)
+    {
         inorder(n->right, func);
     }
 }
 
-void print_tree(RBTREE tree, void(*func)(RBNODE)) {
+void print_tree(RBTREE tree, void (*func)(RBNODE))
+{
     inorder(tree->root, func);
 }
 

@@ -21,6 +21,10 @@
  * 5. Every path from a given node to any of its descendant NIL (leaf) nodes goes 
  *    through the same number of black nodes
  * 
+ * A lot of the information and algorithms described come from "Constructing Red Black Trees",
+ * Ralf Hinze 
+ * (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.2171&rep=rep1&type=pdf)
+ * 
  * TODO: 
  * Add comments describing the ways the functions work, rb_destroy & rb_clear. Once done, add test cases. 
  */
@@ -66,12 +70,20 @@ extern RBTREE rb_create(cmp_func_t cmp);
 extern int rb_insert(RBTREE tree, void *key);
 
 /**
+ * @brief Find the node with the given key value.
+ * @param tree Pointer to the tree
+ * @param key Pointer to the key
+ * @returns the node, if found, null otherwise.
+ */ 
+extern RBNODE rb_find(RBTREE tree, void *key);
+
+/**
  * @brief Remove an item from the tree
  * @param tree Pointer to the tree
  * @param key Item to remove from the tree
  * @returns the key if it exists, otherwise {@code NULL}.
  */
-extern void* rb_remove(RBTREE tree, const void* key);
+// extern void rb_remove(RBTREE tree, void* key);
 
 /**
  * @brief Clear the allocated storage for the tree
@@ -91,7 +103,6 @@ extern void rb_destroy(RBTREE tree);
  * @param func Pointer to the print function.
  */
 extern void print_tree(RBTREE tree, void (*func)(RBNODE));
-
 
 //
 // Traversal Operations

@@ -77,11 +77,13 @@ clean:
 	rm -rf $(OBJ_DIR)
 	rm -rf $(BIN_DIR)
 	rm -rf $(TARGET)
+	mkdir -p $(OBJ_DIR)
+	mkdir -p $(BIN_DIR)
 	
 .PHONY: memcheck
 memcheck: all
 	valgrind -v --show-leak-kinds=all --leak-check=full --track-origins=yes \
-	./$(BIN)
+	./$(TARGET)
 
 # debugging make
 print-% :
