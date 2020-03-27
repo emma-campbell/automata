@@ -37,9 +37,7 @@ int main(void)
     rb_insert(t, (void *)'z');
     rb_insert(t, (void *)'e');
 
-    RBNODE node = rb_find(t, (void*)'c');
-    print_node(node);
-    printf("\n");
+    // RBNODE node = rb_find(t, (void*)'c');
 
     rb_insert(t, (void *)'x');
     rb_insert(t, (void *)'r');
