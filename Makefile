@@ -5,7 +5,7 @@
 # O~~   O~  O~~  O~~~~~~ O~~  O~~  O~~   O~~      O~~      O~~O~~      O~~      
 # O~~       O~~ O~~       O~~ O~~   O~~  O~~      O~~      O~~O~~      O~~      
 # O~~       O~~O~~         O~~O~~     O~~O~~~~~~~~O~~      O~~O~~~~~~~~O~~~~~~~~
-#
+
 TARGET  	?=	auto
 CC 	    	?=	gcc
 LINKER  	?= 	gcc
