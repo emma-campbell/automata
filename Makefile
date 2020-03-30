@@ -1,90 +1,114 @@
-# O~~       O~~      O~       O~~   O~~  O~~~~~~~~O~~~~~~~~O~~O~~      O~~~~~~~~
-# O~ O~~   O~~~     O~ ~~     O~~  O~~   O~~      O~~      O~~O~~      O~~      
-# O~~ O~~ O O~~    O~  O~~    O~~ O~~    O~~      O~~      O~~O~~      O~~      
-# O~~  O~~  O~~   O~~   O~~   O~ O~      O~~~~~~  O~~~~~~  O~~O~~      O~~~~~~  
-# O~~   O~  O~~  O~~~~~~ O~~  O~~  O~~   O~~      O~~      O~~O~~      O~~      
-# O~~       O~~ O~~       O~~ O~~   O~~  O~~      O~~      O~~O~~      O~~      
-# O~~       O~~O~~         O~~O~~     O~~O~~~~~~~~O~~      O~~O~~~~~~~~O~~~~~~~~
+TARGET			:=  auto
 
-TARGET  	?=	auto
-CC 	    	?=	gcc
-LINKER  	?= 	gcc
+CC				:= 	gcc
+STD				:= 	-std=c99
+DEBUG			:= 	-g
+CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra
 
-OBJ_DIR 	:= 	build
-BIN_DIR 	:= 	bin
-SRC_DIR 	:= 	src
-INC_DIR 	:= 	include
+SHOW_COMMAND	:=	@printf "%-15s%s\n"
+SHOW_CC			:=  $(SHOW_COMMAND) "[ $(CC) ]"
+SHOW_CLEAN		:= 	$(SHOW_COMMAND) "[ CLEAN ]"
+SHOW_LINK		:=	$(SHOW_COMMAND) "[ LINK ]"
 
-SRCEXT  	:= 	c
-OBJEXT  	:=	o
-INCEXT  	:=	h
 
-SRCS 		:=	$(shell find $(SRC_DIR) -type f -name '*.$(SRCEXT)')
-OBJS		:=	$(SRCS:$(SRC_DIR)/%.$(SRCEXT)=$(OBJ_DIR)/%.o)
+# Build Paths
+PATHB			:= 	build/
+PATHD			:=	build/depends/
+PATHO			:= 	build/objs/
+PATHR			:= 	build/results/
 
-INC_FLAGS   := -I $(INC_DIR)
-STD    	    := -std=c99
-DEBUG 	    := -g
-CFLAGS 		+= $(STD) $(INC_FLAGS) $(DEBUG) -Wall -Wextra -Werror
-LFLAGS 		+=
+# Source Paths
+PATHS			:= 	src/
+PATHI			:=	include/
+PATHT			:=	tests/
 
-# Obtains the OS type, either 'Darwin' (OS X) or 'Linux'
-UNAME_S:=$(shell uname -s)
+# Unity Path -- For Unit Tests
+UNITY			:=	lib/Unity/src/
 
-# Macros for timing compilation
-ifeq ($(UNAME_S),Darwin)
-	CUR_TIME = awk 'BEGIN{srand(); print srand()}'
-	TIME_FILE = $(dir $@).$(notdir $@)_time
-	START_TIME = $(CUR_TIME) > $(TIME_FILE)
-	END_TIME = read st < $(TIME_FILE) ; \
-		$(RM) $(TIME_FILE) ; \
-		st=$$((`$(CUR_TIME)` - $$st)) ; \
-		echo $$st
+BUILD_PATHS		:= 	$(PATHB) $(PATHD) $(PATHO) $(PATHR)
+
+COMPILE			:= 	$(CC) -c
+LINK			:= 	$(CC)
+DEPEND 			:=  $(CC) -MM -MG -MF
+
+# Includes public headers from include/ directory
+CFLAGS 			+= 	-I$(PATHI)
+
+SRCS 			:= 	$(wildcard $(PATHS)*.c)
+OBJS			:=	$(SRCS:$(PATHS)%.c=$(PATHO)%.o)
+
+ifneq ($(V),)
+  SILENCE           =
 else
-	TIME_FILE = $(dir $@).$(notdir $@)_time
-	START_TIME = date '+%s' > $(TIME_FILE)
-	END_TIME = read st < $(TIME_FILE) ; \
-		$(RM) $(TIME_FILE) ; \
-		st=$$((`date '+%s'` - $$st - 86400)) ; \
-		echo `date -u -d @$$st '+%H:%M:%S'`
+  SILENCE           = @
 endif
 
-all: $(BIN_DIR)/$(TARGET)
-	@echo "Making symlink: $(TARGET) -> $<"
+all: $(BUILD_PATHS) $(PATHB)$(TARGET)
 	@$(RM) $(TARGET)
-	@ln -s $(BIN_DIR)/$(TARGET) $(TARGET)
+	$(SHOW_LINK) "$(PATHB)$(TARGET) -> $(TARGET)"
+	$(SILENCE)@ln -s $(PATHB)$(TARGET) $(TARGET)
 
-# Link the executable
-$(BIN_DIR)/$(TARGET): $(OBJS)
-	@echo "Linking: $@"
-	@$(START_TIME)
-	$(CC) $(OBJS) $(LFLAGS) -o $@
-	@echo -en "\t Link time: "
-	@$(END_TIME)
+$(PATHB)$(TARGET): $(OBJS)
+	$(SHOW_CC) $@
+	$(SILENCE)$(LINK) -o $@ $^
 
-# Source file rules
-# After the first compilation they will be joined with the rules from the
-# dependency files to provide header dependencies
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.$(SRCEXT)
-	@echo "Compiling: $< -> $@"
-	@$(START_TIME)
-	$(CMD_PREFIX)$(CC) $(CFLAGS) $(INC_FLAGS) -MP -MMD -c $< -o $@
-	@echo -en "\t Compile time: "
-	@$(END_TIME)
+# Compiles the source files
+$(PATHO)%.o: $(PATHS)%.c
+	$(SHOW_CC) $@
+	$(SILENCE)$(COMPILE) $(CFLAGS) $< -o $@
+
+# Compiles the test files
+$(PATHO)%.o: $(PATHT)%.c
+	$(SHOW_CC) $@
+	$(SILENCE)$(COMPILE) $(CFLAGS) $< -o $@
+
+# Compiles unity test framework
+$(PATHO)%.o: $(PATHU)%.c $(PATHU)%.h
+	$(SHOW_CC) $@
+	$(SILENCE)$(COMPILE) $(CFLAGS) $< -o $@
+
+# Generates Dependency Files for the Source src/
+$(PATHD)%.d: $(PATHS)%.c
+	$(SILENCE) $(DEPEND) $@ $<
+
+# Generates the dependency files to the build/depends directory.
+$(PATHD)%.d: $(PATHT)%.c
+	$(SILENCE) $(DEPEND) $@ $<
+
+# #############################################################################
+# Targets that create neccesary directories
+# #############################################################################
+
+$(PATHB): 
+	mkdir -p $(PATHB)
+
+$(PATHD):
+	mkdir -p $(PATHD)
+
+$(PATHO):
+	mkdir -p $(PATHO)
+
+$(PATHR):
+	mkdir -p $(PATHR)
+
+
+# ##############################################################################
+# Cleaning things up a lil
+# ##############################################################################
 
 .PHONY: clean
 clean:
-	rm -rf $(OBJ_DIR)
-	rm -rf $(BIN_DIR)
-	rm -rf $(TARGET)
-	mkdir -p $(OBJ_DIR)
-	mkdir -p $(BIN_DIR)
-	
-.PHONY: memcheck
-memcheck: all
-	valgrind -v --show-leak-kinds=all --leak-check=full --track-origins=yes \
-	./$(TARGET)
+	$(SHOW_CLEAN) $(PATHO)*.o 
+	$(SHOW_CLEAN) $(TARGET) 
+	$(SHOW_CLEAN) $(PATHB)$(TARGET)
+	$(SILENCE)rm -rf $(PATHO)*.o
+	$(SILENCE)rm -rf $(TARGET)
+	$(SILENCE)rm -rf $(PATHB)$(TARGET)
 
-# debugging make
+# ##############################################################################
+# Debug Make
+#
+# This command will print any variable to understand wth is going on
+# ##############################################################################
 print-% :
 	@echo $* = $($*)
