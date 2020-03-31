@@ -17,6 +17,8 @@ To round it all off, let's make a function that takes an instance of an NFA and 
 
 # Build Instructions
 
+<img align="right" width="56%" src="https://raw.githubusercontent.com/emma-campbell/automata/master/example.svg?sanitize=true">
+
 As long as you have `make` installed on your system, all you need to do is run
 
 ```
@@ -25,4 +27,11 @@ make
 
 to create the executable. From there, call `./auto` to run the program.
 
-If you need to see the valgrind report, run `make memcheck` and navigate to `/bin`, where you find the generated report.
+Optionally, if you care to run the unit tests there is a *slight* amount of setting up to do. Run the following to set up the submodule [Narwhal](https://github.com/vberlier/narwhal).
+
+```bash
+git submodule init
+git submodule update
+```
+
+Then, all you need is the make test target, `make test`, to run the unit testing.
