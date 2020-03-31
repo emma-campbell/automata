@@ -83,7 +83,7 @@ extern RBNODE rb_find(RBTREE tree, void *key);
  * @param key Item to remove from the tree
  * @returns the key if it exists, otherwise {@code NULL}.
  */
-// extern void rb_remove(RBTREE tree, void* key);
+extern RBNODE rb_remove(RBTREE tree, void* key);
 
 /**
  * @brief Clear the allocated storage for the tree

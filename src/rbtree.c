@@ -49,6 +49,15 @@ RBNODE get_uncle_node(RBNODE n)
     return get_sibling_node(p);
 }
 
+COLOR node_color(RBNODE n)
+{
+
+    if (!n)
+        return BLACK;
+    else
+        return n->color;
+}
+
 /**
  * Rotates the passed in node to the left
  */
@@ -129,6 +138,19 @@ void rb_destroy(RBTREE tree)
     RBNODE tmp = tree->root;
     postorder(tmp, free_node);
     free(tree);
+}
+
+RBNODE find_subtree_min(RBNODE n) {
+    
+    while (n->left)
+        n = n->left;
+    return n;
+}
+
+RBNODE find_subtree_max(RBNODE n) {
+    while (n->right)
+        n = n->right;
+    return n;
 }
 
 //
@@ -295,10 +317,197 @@ RBNODE rb_find(RBTREE tree, void *key)
     return find_node(tree->root, key, tree->cmp);
 }
 
-// void rb_remove(RBTREE t, void *key)
-// {
-//     return;
-// }
+void replace_child(RBTREE tree, RBNODE n, RBNODE child)
+{
+
+    RBNODE parent;
+
+    parent = n->parent;
+
+    if (child)
+        child->parent = parent;
+
+    if (parent)
+    {
+        if (parent->left == n)
+        {
+            parent->left = child;
+        }
+        else
+        {
+            parent->right = child;
+        }
+    }
+    else
+    {
+        tree->root = child;
+        if (child)
+            child->color = BLACK;
+    }
+}
+
+// ================================================================================
+// DELETION
+// ================================================================================
+
+void delete_case_1(RBTREE tree, RBNODE n);
+void delete_case_2(RBTREE tree, RBNODE n);
+void delete_case_3(RBTREE tree, RBNODE n);
+void delete_case_4(RBTREE tree, RBNODE n);
+void delete_case_5(RBTREE tree, RBNODE n);
+void delete_case_6(RBTREE tree, RBNODE n);
+
+void delete_one_child(RBTREE tree, RBNODE n)
+{
+
+    RBNODE child = n->left != NULL ? n->left : n->right;
+
+    if (n->color == BLACK)
+    {
+        n->color = node_color(child);
+        delete_case_1(tree, n);
+    }
+    replace_child(tree, n, child);
+}
+
+void delete_case_1(RBTREE tree, RBNODE n)
+{
+    if (n->parent != NULL)
+    {
+        delete_case_2(tree, n);
+    }
+}
+
+void delete_case_2(RBTREE tree, RBNODE n)
+{
+    RBNODE s = get_sibling_node(n);
+
+    if (s->color == RED)
+    {
+        n->parent->color = RED;
+        s->color = BLACK;
+        if (n == n->parent->left)
+        {
+            rotate_left(n->parent);
+        }
+        else
+        {
+            rotate_right(n->parent);
+        }
+    }
+    delete_case_3(tree, n);
+}
+
+void delete_case_3(RBTREE tree, RBNODE n)
+{
+    RBNODE s = get_sibling_node(n);
+
+    if ((n->parent->color == BLACK) &&
+        (node_color(s) == BLACK) &&
+        (node_color(s->left) == BLACK) &&
+        (node_color(s->right) == BLACK))
+    {
+        s->color = RED;
+        delete_case_1(tree, n->parent);
+    }
+    else
+    {
+        delete_case_4(tree, n);
+    }
+}
+
+void delete_case_4(RBTREE tree, RBNODE n)
+{
+    RBNODE s = get_sibling_node(n);
+
+    if ((n->parent->color == RED) &&
+        (node_color(s) == BLACK) &&
+        (node_color(s->left) == BLACK) &&
+        (node_color(s->right) == BLACK))
+    {
+        s->color = RED;
+        n->parent->color = BLACK;
+    }
+    else
+    {
+        delete_case_5(tree, n);
+    }
+}
+
+void delete_case_5(RBTREE tree, RBNODE n)
+{
+    RBNODE s = get_sibling_node(n);
+
+    if (s->color == BLACK)
+    {
+        if ((n == n->parent->left) &&
+            (node_color(s->right) == BLACK) &&
+            (node_color(s->left) == RED))
+        {
+            s->color = RED;
+            s->left->color = BLACK;
+            rotate_right(s);
+        }
+        else if ((n == n->parent->right) &&
+                 (node_color(s->left) == BLACK) &&
+                 (node_color(s->right) == RED))
+        {
+            s->color = RED;
+            s->right->color = BLACK;
+            rotate_left(s);
+        }
+    }
+    delete_case_6(tree, n);
+}
+
+void delete_case_6(RBTREE tree, RBNODE n)
+{
+    RBNODE s = get_sibling_node(n);
+
+    s->color = n->parent->color;
+    n->parent->color = BLACK;
+
+    if (n == n->parent->left)
+    {
+        s->right->color = BLACK;
+        rotate_left(n->parent);
+    }
+    else
+    {
+        s->left->color = BLACK;
+        rotate_right(n->parent);
+    }
+}
+
+void swap(RBNODE n, RBNODE m) {
+    RBNODE tmp = n;
+    n = m;
+    m = tmp;
+}
+
+RBNODE rb_remove(RBTREE t, void *key)
+{
+    RBNODE node;
+    RBNODE min;
+
+    if (t->root == NULL)
+        return NULL;
+    
+    node = rb_find(t, key);
+
+    if (node == NULL)
+        return NULL;
+
+    if (node->left && node->right)
+    {
+        min = find_subtree_min(node->right);
+        swap(node, min);
+        node = min;
+    }
+
+    delete_one_child(t, node);
+    return node;
+}
 
 //
 // QUEUE

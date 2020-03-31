@@ -34,5 +34,19 @@ TEST(RB_INSERT)
 {
     RBTREE tree = rb_create(&cmp_char);
     rb_insert(tree, (void *)'x');
-    ASSERT(rb_find(tree, (void *)'x') != NULL);  
+    ASSERT(rb_find(tree, (void *)'x') != NULL); 
+}
+
+TEST(RB_REMOVE) 
+{
+    RBTREE tree = rb_create(&cmp_char);
+    rb_insert(tree, (void *)'x');
+    rb_insert(tree, (void *)'a');
+    rb_insert(tree, (void *)'c');
+    rb_insert(tree, (void *)'y');
+    rb_insert(tree, (void *)'h');
+    
+    rb_remove(tree, (void *)'a');
+
+    ASSERT(rb_find(tree, (void *)'a') == NULL);
 }
