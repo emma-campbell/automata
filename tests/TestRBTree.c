@@ -1,4 +1,4 @@
-#include <unity.h>
+#include <narwhal.h>
 #include <rbtree.h>
 
 int cmp_char(void *c1, void *c2)
@@ -26,20 +26,22 @@ void print_node(RBNODE n)
     printf("%c ", (char)n->key);
 }
 
-// run before and after each test!
-void setup(void) {}
-void tearDown(void) {}
-
-
-void test_rb_create()
-{
-    RBTREE tree = rb_create(&cmp_char);
-    TEST_ASSERT_NOT_NULL(tree);
+TEST(RB_CONSTRUCTOR) {
+    ASSERT(rb_create(&cmp_char) != NULL, "Unable to create RBTREE object.");
 }
 
 
-int main(void) {
-    UNITY_BEGIN();
-    RUN_TEST(test_rb_create);
-    RETURN UNITY_END();
+TEST_FIXTURE(tree, RBTREE) {
+    
+    *tree = rb_create(&cmp_char);
+
+    CLEANUP_FIXTURE(tree) {
+        rb_destroy(tree);
+    }
+}
+
+TEST(RB_INSERT, tree)
+{
+    rb_insert(tree, (void *)'x');
+    ASSERT(rb_find(tree, (void *)'x') != NULL, 'Unable to find inserted object.');  
 }

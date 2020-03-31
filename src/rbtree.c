@@ -145,7 +145,7 @@ RBNODE insert(RBNODE root, RBNODE n, cmp_func_t cmp);
 void insert_recursive(RBNODE root, RBNODE n, cmp_func_t cmp);
 
 //
-// All this function does wrap `insert` so that you can call it just 
+// All this function does wrap `insert` so that you can call it just
 // using the tree structure
 int rb_insert(RBTREE tree, void *key)
 {
@@ -275,7 +275,6 @@ void insert_case_3(RBNODE n)
     case_3_helper(n);
 };
 
-
 RBNODE find_node(RBNODE root, void *key, cmp_func_t cmp)
 {
     if (root == NULL)
@@ -295,7 +294,6 @@ RBNODE rb_find(RBTREE tree, void *key)
 {
     return find_node(tree->root, key, tree->cmp);
 }
-
 
 // void rb_remove(RBTREE t, void *key)
 // {
@@ -358,7 +356,6 @@ void enqueue(RBNODE data)
     rear->next = tmp;
     rear = tmp;
 }
-
 
 void levelorder(RBNODE root, void (*func)(RBNODE))
 {

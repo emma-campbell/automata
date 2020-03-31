@@ -10,7 +10,6 @@ SHOW_CC			:=  $(SHOW_COMMAND) "[ $(CC) ]"
 SHOW_CLEAN		:= 	$(SHOW_COMMAND) "[ CLEAN ]"
 SHOW_LINK		:=	$(SHOW_COMMAND) "[ LINK ]"
 
-
 # Build Paths
 PATHB			:= 	build/
 PATHD			:=	build/depends/
@@ -32,16 +31,19 @@ LINK			:= 	$(CC)
 DEPEND 			:=  $(CC) -MM -MG -MF
 
 # Includes public headers from include/ directory
-CFLAGS 			+= 	-I$(PATHI)
-
+CFLAGS 			+= 	-I$(PATHI) -I$(UNITY) -I$(PATHS) -DTEST
 SRCS 			:= 	$(wildcard $(PATHS)*.c)
 OBJS			:=	$(SRCS:$(PATHS)%.c=$(PATHO)%.o)
 
 ifneq ($(V),)
-  SILENCE           =
+	SILENCE     :=
 else
-  SILENCE           = @
+	SILENCE     := @
 endif
+
+# ##########################################################################
+# Build rules specific to 'all' target
+# ##########################################################################
 
 all: $(BUILD_PATHS) $(PATHB)$(TARGET)
 	@$(RM) $(TARGET)
@@ -50,26 +52,41 @@ all: $(BUILD_PATHS) $(PATHB)$(TARGET)
 
 $(PATHB)$(TARGET): $(OBJS)
 	$(SHOW_CC) $@
-	$(SILENCE)$(LINK) -o $@ $^
+	$(SILENCE) $(LINK) -o $@ $^
+
+# ##########################################################################
+# Testing Rules
+# ##########################################################################
+
+NARWHAL 	:= $(PATHI)narwhal/
+SOURCES		:= $(filter-out $(PATHS)main.c, $(wildcard $(PATHS)*.c)) $(NARWHAL)narwhal.h
+OBJECTS		:= $(SOURCES:$(PATHS)%.c=$(PATHO)%.o)
+
+test: run_tests
+	./$<
+
+run_tests: $(OBJECTS)
+	$(SHOW_CC) $^
+	$(SILENCE) $(LINK) -o $@ $^
+
+# ##########################################################################
+# Compilation Rules
+# ##########################################################################
 
 # Compiles the source files
-$(PATHO)%.o: $(PATHS)%.c
+$(PATHO)%.o:: $(PATHS)%.c
 	$(SHOW_CC) $@
-	$(SILENCE)$(COMPILE) $(CFLAGS) $< -o $@
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
 # Compiles the test files
-$(PATHO)%.o: $(PATHT)%.c
+$(PATHO)%.o:: $(PATHT)%.c
 	$(SHOW_CC) $@
-	$(SILENCE)$(COMPILE) $(CFLAGS) $< -o $@
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
 # Compiles unity test framework
-$(PATHO)%.o: $(PATHU)%.c $(PATHU)%.h
+$(PATHO)%.o:: $(PATHU)%.c $(PATHU)%.h
 	$(SHOW_CC) $@
-	$(SILENCE)$(COMPILE) $(CFLAGS) $< -o $@
-
-# Generates Dependency Files for the Source src/
-$(PATHD)%.d: $(PATHS)%.c
-	$(SILENCE) $(DEPEND) $@ $<
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
 # Generates the dependency files to the build/depends directory.
 $(PATHD)%.d: $(PATHT)%.c

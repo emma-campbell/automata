@@ -1,3 +1,9 @@
 [submodule "lib/Unity"]
 	path = lib/Unity
 	url = https://github.com/ThrowTheSwitch/Unity.git
+[submodule "narwhal"]
+	path = narwhal
+	url = https://github.com/vberlier/narwhal
+[submodule "lib/narwhal"]
+	path = lib/narwhal
+	url = https://github.com/vberlier/narwhal

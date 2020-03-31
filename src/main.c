@@ -26,8 +26,9 @@ void print_node(RBNODE n)
     printf("%c ", (char)n->key);
 }
 
-int main(void) {
-    
+int main(void)
+{
+
     RBTREE tree = rb_create(&cmp_char);
     rb_insert(tree, (void *)'c');
     rb_insert(tree, (void *)'d');
