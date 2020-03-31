@@ -31,7 +31,7 @@ LINK			:= 	$(CC)
 DEPEND 			:=  $(CC) -MM -MG -MF
 
 # Includes public headers from include/ directory
-CFLAGS 			+= 	-I$(PATHI) -I$(UNITY) -I$(PATHS) -DTEST
+CFLAGS 			+= 	-I$(PATHI) -I$(PATHS) -DTEST
 SRCS 			:= 	$(wildcard $(PATHS)*.c)
 OBJS			:=	$(SRCS:$(PATHS)%.c=$(PATHO)%.o)
 
@@ -58,16 +58,16 @@ $(PATHB)$(TARGET): $(OBJS)
 # Testing Rules
 # ##########################################################################
 
-NARWHAL 	:= $(PATHI)narwhal/
-SOURCES		:= $(filter-out $(PATHS)main.c, $(wildcard $(PATHS)*.c)) $(NARWHAL)narwhal.h
-OBJECTS		:= $(SOURCES:$(PATHS)%.c=$(PATHO)%.o)
+NARWHAL 		:= lib/narwhal/dist/
+SOURCES			:= $(wildcard $(PATHT)*.c) $(NARWHAL)narwhal.c
+SOURCES 		+= $(filter-out $(PATHS)main.c, $(wildcard $(PATHS)*.c))
 
 test: run_tests
 	./$<
 
-run_tests: $(OBJECTS)
+run_tests: $(SOURCES)
 	$(SHOW_CC) $^
-	$(SILENCE) $(LINK) -o $@ $^
+	$(SILENCE) $(LINK) -I$(NARWHAL) -I$(PATHS) -I$(PATHI) -o $@ $^
 
 # ##########################################################################
 # Compilation Rules
@@ -84,7 +84,7 @@ $(PATHO)%.o:: $(PATHT)%.c
 	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
 # Compiles unity test framework
-$(PATHO)%.o:: $(PATHU)%.c $(PATHU)%.h
+$(PATHO)%.o:: $(NARWHAL)%.c $(NARWHAL)%.h
 	$(SHOW_CC) $@
 	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
@@ -118,8 +118,14 @@ clean:
 	$(SHOW_CLEAN) $(PATHO)*.o 
 	$(SHOW_CLEAN) $(TARGET) 
 	$(SHOW_CLEAN) $(PATHB)$(TARGET)
+	$(SHOW_CLEAN) $(PATHB)*.o
+	$(SHOW_CLEAN) run_tests
+
 	$(SILENCE)rm -rf $(PATHO)*.o
+	$(SILENCE)rm -rf $(PATHB)*.o
+	$(SILENCE)rm -rf $(PATHB)*.c
 	$(SILENCE)rm -rf $(TARGET)
+	$(SILENCE)rm -rf run_tests
 	$(SILENCE)rm -rf $(PATHB)$(TARGET)
 
 # ##############################################################################
