@@ -50,3 +50,23 @@ TEST(RB_REMOVE)
 
     ASSERT(rb_find(tree, (void *)'a') == NULL);
 }
+
+TEST (RB_MAX) {
+    RBTREE tree = rb_create(&cmp_char);
+    rb_insert(tree, (void *)'x');
+    rb_insert(tree, (void *)'a');
+    rb_insert(tree, (void *)'c');
+    rb_insert(tree, (void *)'y');
+    rb_insert(tree, (void *)'h');
+    ASSERT(rb_max(tree) == (void *)'y');
+}
+
+TEST (RB_MIN) {
+    RBTREE tree = rb_create(&cmp_char);
+    rb_insert(tree, (void *)'x');
+    rb_insert(tree, (void *)'a');
+    rb_insert(tree, (void *)'c');
+    rb_insert(tree, (void *)'y');
+    rb_insert(tree, (void *)'h');
+    ASSERT(rb_min(tree) == (void *)'a');
+}
