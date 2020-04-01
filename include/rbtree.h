@@ -2,11 +2,12 @@
  * @author Emma Campbell
  * @date 2020-03-24
  *
- * Simple Red-Black Tree implementation. Red-black trees are self-balancing, allowing for
- * traversal in O(log n) time, making them rather efficient for re(trie)val of items. 
- * The insertion and deletion, as well as rearranging of the tree also all occur in 
- * O(log n) time.
- *
+ * Simple Red-Black Tree implementation. Red-black trees are self-balancing,
+ * allowing for traversal in O(log n) time, making them rather efficient for 
+ * re(trie)val of items. 
+ * 
+ * The insertion and deletion, as well as rearranging of the tree also all occur
+ * in O(log n) time.
  *
  * **BASIC PROPERTIES OF RED-BLACK TREES**
  *
@@ -14,19 +15,19 @@
  *
  * 1. Each node is either red or black.
  * 2. The root of the tree is black.
- *  - This rule is sometimes ommited, because the root can be changed from red to black,
- *    but not vice-versa.
+ *  - This rule is sometimes ommited, because the root can be changed from red
+ *    to black, but not vice-versa.
  * 3. All leaves are black.
  * 4. If a node is red, then both its children are black.
- * 5. Every path from a given node to any of its descendant NIL (leaf) nodes goes 
- *    through the same number of black nodes
+ * 5. Every path from a given node to any of its descendant NIL (leaf) nodes
+ *    goes through the same number of black nodes
  * 
- * A lot of the information and algorithms described come from "Constructing Red Black Trees",
- * Ralf Hinze 
+ * A lot of the information and algorithms described come from "Constructing Red
+ *  Black Trees", Ralf Hinze 
  * (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.2171&rep=rep1&type=pdf)
  * 
  * TODO: 
- * Add comments describing the ways the functions work, rb_destroy & rb_clear. Once done, add test cases. 
+ * Implement the set operations on rebblack tree
  */
 #ifndef _RBTREE_h
 #define _RBTREE_h
@@ -56,6 +57,21 @@ struct rb_tree {
 typedef struct rb_tree *RBTREE;
 
 extern RBTREE rb_create(cmp_func_t cmp);
+
+/**
+ * @brief Find the minimum value of the given tree
+ * @param tree Pointer to the tree
+ * @returns minimum value of the tree 
+ */
+extern void *rb_min(RBTREE tree);
+
+/**
+ * @brief Find the maximum value of the given tree
+ * @param tree Pointer to the tree
+ * @returns maximum value of the tree 
+ */
+extern void *rb_max(RBTREE tree);
+
 
 //
 // Basic Operations
