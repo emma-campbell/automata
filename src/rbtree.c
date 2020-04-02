@@ -14,7 +14,6 @@ RBNODE sibling(RBNODE n);
 RBNODE uncle(RBNODE n);
 void free_node(RBNODE n);
 
-
 // rotation functions
 void rotate_left(RBNODE n);
 void rotate_right(RBNODE n);
@@ -27,6 +26,9 @@ RBNODE find_subtree_min(RBNODE n);
 // tree utils
 RBNODE find_node(RBNODE root, void *key, cmp_func_t cmp);
 void swap(RBNODE n, RBNODE m);
+int find_subtree_height(RBNODE n);
+int find_node_rank(RBNODE n);
+int find_subtree_size(RBNODE n);
 
 //
 // Declaring the insertion helpers
@@ -68,7 +70,6 @@ RBTREE rb_create(cmp_func_t cmp)
     return tree;
 }
 
-
 void rb_destroy(RBTREE tree)
 {
     RBNODE tmp = tree->root;
@@ -76,18 +77,17 @@ void rb_destroy(RBTREE tree)
     free(tree);
 }
 
-void* rb_max(RBTREE tree) 
+void *rb_max(RBTREE tree)
 {
     RBNODE n = find_subtree_max(tree->root);
     return n->key;
 }
 
-void* rb_min(RBTREE tree) 
+void *rb_min(RBTREE tree)
 {
     RBNODE n = find_subtree_min(tree->root);
     return n->key;
 }
-
 
 int rb_insert(RBTREE tree, void *key)
 {
@@ -96,12 +96,10 @@ int rb_insert(RBTREE tree, void *key)
     return 1;
 };
 
-
 RBNODE rb_find(RBTREE tree, void *key)
 {
     return find_node(tree->root, key, tree->cmp);
 }
-
 
 RBNODE rb_remove(RBTREE t, void *key)
 {
@@ -110,7 +108,7 @@ RBNODE rb_remove(RBTREE t, void *key)
 
     if (t->root == NULL)
         return NULL;
-    
+
     node = rb_find(t, key);
 
     if (node == NULL)
@@ -127,7 +125,112 @@ RBNODE rb_remove(RBTREE t, void *key)
     return node;
 }
 
-void levelorder(RBTREE tree, void (*func)(RBNODE)) {
+int rb_height(RBTREE tree)
+{
+    return find_subtree_height(tree->root);
+}
+
+int rb_rank(RBTREE tree)
+{
+    return find_node_rank(tree->root);
+}
+
+int rb_size(RBTREE tree)
+{
+    return find_subtree_size(tree->root);
+}
+
+RBTREE rb_join(RBTREE t1, RBTREE t2)
+{
+
+    int t1r = rb_rank(t1);
+    int t2r = rb_rank(t2);
+
+    RBTREE joined_tree = rb_create(t1->cmp);
+
+    if (t1r > t2r) /* Assume T1 has larger rank */
+    {
+        // According to a Stanford lecture on balancing trees,
+        // if you don't have some key K to join the two trees
+        // with, delete the minimum value from the tree with
+        // the smaller rank, and use that value to join the
+        // two trees.
+        //
+        // http://web.stanford.edu/class/archive/cs/cs166/cs166.1146/lectures/03/Small03.pdf
+
+        RBNODE root = rb_remove(t2, rb_min(t2));
+        RBNODE v = t1->root;
+
+        while (v != NULL)
+        { /* Walk down the right of t1 */
+
+            if (find_node_rank(v) == t2r)
+            {
+                // We found the node w/ the same rank as t2
+                break;
+            }
+
+            v = v->right;
+        }
+
+        RBNODE p = parent(v);
+
+        // Using our joining node (root), let v be its left
+        // child, and the root of t2 be its right.
+        root->left = v;
+        root->right = t2->root;
+
+        if (p != NULL)
+        {
+            p->right = root;
+        }
+
+        __repair_insert(root);
+
+        rb_destroy(t2);
+        rb_destroy(t1);
+
+        joined_tree->root = root;
+    }
+    else /* if t2 has the larger rank, do the same but mirrored*/
+    {
+        RBNODE root = rb_remove(t1, rb_min(t1));
+        RBNODE v = t2->root;
+
+        while (v != NULL)
+        {
+
+            if (find_node_rank(v) == t1r)
+            {
+                break;
+            }
+
+            v = v->right;
+        }
+
+        RBNODE p = parent(v);
+
+        root->left = v;
+        root->right = t1->root;
+
+        if (p != NULL)
+        {
+            p->right = root;
+        }
+
+        __repair_insert(root);
+
+        rb_destroy(t2);
+        rb_destroy(t1);
+
+        joined_tree->root = root;
+    }
+
+    return joined_tree;
+}
+
+void levelorder(RBTREE tree, void (*func)(RBNODE))
+{
     levelorder__help(tree->root, tree->q, func);
 }
 
@@ -136,18 +239,18 @@ void levelorder__help(RBNODE root, QUEUE q, void (*func)(RBNODE))
     if (root == NULL)
         return;
 
-    enqueue(q, (void*)root);
+    enqueue(q, (void *)root);
 
     while (!is_empty(q))
     {
-        RBNODE curr = (RBNODE) pop_front(q);
+        RBNODE curr = (RBNODE)pop_front(q);
         func(curr);
 
         if (curr->left != NULL)
-            enqueue(q, (void*)curr->left);
+            enqueue(q, (void *)curr->left);
 
         if (curr->right != NULL)
-            enqueue(q, (void*)curr->right);
+            enqueue(q, (void *)curr->right);
 
         dequeue(q);
     }
@@ -376,8 +479,9 @@ void free_node(RBNODE n)
  * @brief finds the minumum tree from the given root
  * @param n the root of the tree to find min. of.
  */
-RBNODE find_subtree_min(RBNODE n) {
-    
+RBNODE find_subtree_min(RBNODE n)
+{
+
     while (n->left)
         n = n->left;
     return n;
@@ -387,16 +491,74 @@ RBNODE find_subtree_min(RBNODE n) {
  * @brief finds the maximum tree from the given root
  * @param n the root of the tree to find max. of.
  */
-RBNODE find_subtree_max(RBNODE n) {
+RBNODE find_subtree_max(RBNODE n)
+{
     while (n->right)
         n = n->right;
     return n;
 }
 
-void swap(RBNODE n, RBNODE m) {
+/**
+ * Swaps the positions of two nodes
+ */
+void swap(RBNODE n, RBNODE m)
+{
     RBNODE tmp = n;
     n = m;
     m = tmp;
+}
+
+/**
+ * Finds the height of the given node 
+ */
+int find_subtree_height(RBNODE n)
+{
+    if (n == NULL)
+    {
+        return 0;
+    }
+    else
+    {
+
+        int ld = find_subtree_height(n->left);
+        int rd = find_subtree_height(n->right);
+
+        if (ld > rd)
+            return (ld + 1);
+        else
+            return (rd + 1);
+    }
+}
+
+int find_node_rank(RBNODE n)
+{
+    int cnt = 0;
+    while (n)
+    {
+        if (n->color == BLACK)
+        {
+            cnt++;
+        }
+        n = n->left;
+    }
+    return cnt;
+}
+
+int find_subtree_size(RBNODE n) {
+    if (n == NULL)
+        return 0;
+
+    int total = 1;
+
+    if (n->left != NULL) {
+        total += find_subtree_size(n->left);
+    }
+
+    if (n->right != NULL) {
+        total += find_subtree_size(n->right);
+    }
+
+    return total;
 }
 
 // ////////////////////// ///////////////////////// ///////////////////////
@@ -600,7 +762,6 @@ void replace_child(RBTREE tree, RBNODE n, RBNODE child)
             child->color = BLACK;
     }
 }
-
 
 void delete_one_child(RBTREE tree, RBNODE n)
 {

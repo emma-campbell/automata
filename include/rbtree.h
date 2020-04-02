@@ -74,10 +74,30 @@ extern void *rb_min(RBTREE tree);
  */
 extern void *rb_max(RBTREE tree);
 
+/**
+ * @brief Find the maximum height of the given tree (should be maximum O(log(n)))
+ * @param tree Pointer to the tree
+ * @returns the height of the tree
+ */
+extern int rb_height(RBTREE tree);
 
-//
+/**
+ * @brief Find the rank of the tree from its root
+ * @param tree Pointer to the tree
+ * @returns the number of black nodes between the root of the tree and any given leaf.
+ */
+extern int rb_rank(RBTREE tree);
+
+/**
+ * @brief Returns the number of nodes in the tree
+ * @param tree Pointer to the tree
+ * @returns the number of nodes in the tree.
+ */
+extern int rb_size(RBTREE tree);
+
+// ///////////////////////////////////////////////////////////
 // Basic Operations
-//
+// ///////////////////////////////////////////////////////////
 
 /**
  * @brief Insert a item into the RB Tree.
@@ -159,7 +179,22 @@ extern void inorder(RBNODE n, void (*func)(RBNODE));
 //
 // TODO: Implement RB Set Operations
 
-// extern RBTREE rb_join(RBTREE t1, RBTREE t2);
+/**
+ * @brief Joins two Red-Black trees, t1 and t2 and returns a    
+ *        red-black tree T such that 
+ *                   T = t1 U {x} U t2 
+ * @param t1 the first red-black tree in the join
+ * @param t2 the second red-black tree in the join
+ * @returns a new red-black tree that is the result of the join
+ *          of t1 U t2
+ * 
+ * NOTE: An important assumption here is that one tree will 
+ * have elements that are smaller than, and unique in 
+ * comparison to the other tree (it need not matter which is 
+ * the smaller of the two)
+ */
+extern RBTREE rb_join(RBTREE t1, RBTREE t2);
+
 // extern RBTREE rb_union(RBTREE t1, RBTREE t2);
 // extern RBTREE rb_intersection(RBTREE t1, RBTREE t2);
 
