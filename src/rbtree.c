@@ -2,8 +2,8 @@
  * 
  */
 #include <rbtree.h>
-#include <stdlib.h>
 
+#include <stdlib.h>
 #include <stdio.h>
 
 // Node specific functions
@@ -51,62 +51,8 @@ void delete_case_5(RBTREE tree, RBNODE n);
 void delete_case_6(RBTREE tree, RBNODE n);
 
 //
-// QUEUE
-//
-// Quick Queue definition for printing things in level order
-//
-////////////////////////////////////////////////////////////////
-
-struct Queue
-{
-    RBNODE data;
-    struct Queue *next;
-};
-
-struct Queue *front = NULL;
-struct Queue *rear = NULL;
-
-RBNODE pop_front()
-{
-    RBNODE data = NULL;
-    data = front->data;
-    return data;
-}
-
-int isempty()
-{
-    if (front == NULL)
-        return 1;
-    else
-        return 0;
-}
-
-void dequeue()
-{
-    if (isempty())
-        return;
-
-    struct Queue *tmp = front;
-    front = front->next;
-    free(tmp);
-}
-
-void enqueue(RBNODE data)
-{
-    struct Queue *tmp = (struct Queue *)malloc(sizeof(struct Queue));
-    tmp->data = data;
-    tmp->next = NULL;
-
-    if (front == NULL && rear == NULL)
-    {
-        front = rear = tmp;
-        return;
-    }
-
-    rear->next = tmp;
-    rear = tmp;
-}
-
+// Traversal helpers
+void levelorder__help(RBNODE root, QUEUE q, void (*func)(RBNODE));
 
 ////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS
@@ -118,7 +64,7 @@ RBTREE rb_create(cmp_func_t cmp)
     assert(tree);
 
     tree->cmp = cmp;
-
+    tree->q = create_queue();
     return tree;
 }
 
@@ -181,26 +127,29 @@ RBNODE rb_remove(RBTREE t, void *key)
     return node;
 }
 
-void levelorder(RBNODE root, void (*func)(RBNODE))
-{
+void levelorder(RBTREE tree, void (*func)(RBNODE)) {
+    levelorder__help(tree->root, tree->q, func);
+}
 
+void levelorder__help(RBNODE root, QUEUE q, void (*func)(RBNODE))
+{
     if (root == NULL)
         return;
 
-    enqueue(root);
+    enqueue(q, (void*)root);
 
-    while (!isempty())
+    while (!is_empty(q))
     {
-        RBNODE curr = pop_front();
+        RBNODE curr = (RBNODE) pop_front(q);
         func(curr);
 
         if (curr->left != NULL)
-            enqueue(curr->left);
+            enqueue(q, (void*)curr->left);
 
         if (curr->right != NULL)
-            enqueue(curr->right);
+            enqueue(q, (void*)curr->right);
 
-        dequeue();
+        dequeue(q);
     }
 }
 

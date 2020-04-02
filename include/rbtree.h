@@ -33,6 +33,7 @@
 #define _RBTREE_h
 
 #include <common.h>
+#include <queue.h>
 
 enum color_t { BLACK, RED };
 typedef enum color_t COLOR;
@@ -52,6 +53,7 @@ typedef int (*cmp_func_t)(void*, void*);
 struct rb_tree {
     RBNODE root;
     cmp_func_t cmp;
+    QUEUE q;
 };
 
 typedef struct rb_tree *RBTREE;
@@ -129,7 +131,7 @@ extern void print_tree(RBTREE tree, void (*func)(RBNODE));
  * @param n Root node
  * @param func Function applied to each node
  */
-extern void levelorder(RBNODE n, void (*func)(RBNODE));
+extern void levelorder(RBTREE tree, void (*func)(RBNODE));
 
 /**
  * @brief Recurses through the tree in preorder
