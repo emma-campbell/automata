@@ -29,13 +29,22 @@ void print_node(RBNODE n)
 int main(void)
 {
 
-    RBTREE tree = rb_create(&cmp_char);
-    rb_insert(tree, (void *)'c');
-    rb_insert(tree, (void *)'d');
-    rb_insert(tree, (void *)'a');
-    rb_insert(tree, (void *)'z');
-    rb_insert(tree, (void *)'w');
-    rb_insert(tree, (void *)'x');
-    print_tree(tree, &print_node);
-    rb_destroy(tree);
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+    rb_insert(t1, (void *)'e');
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'f');
+    rb_insert(t2, (void *)'g');
+    rb_insert(t2, (void *)'h');
+    rb_insert(t2, (void *)'i');
+    rb_insert(t2, (void *)'j');
+    rb_insert(t2, (void *)'k');
+
+    RBTREE join2 = rb_join(t1, t2);
+    print_tree(join2, print_node);
+
 }

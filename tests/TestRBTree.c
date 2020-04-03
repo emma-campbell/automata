@@ -112,3 +112,30 @@ TEST (RB_SIZE) {
 
     ASSERT(rb_size(tree) == 5);
 }
+
+TEST (RB_JOIN) {
+
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+    rb_insert(t1, (void *)'e');
+    
+    int t1_size = rb_size(t1);
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'f');
+    rb_insert(t2, (void *)'g');
+    rb_insert(t2, (void *)'h');
+    rb_insert(t2, (void *)'i');
+    rb_insert(t2, (void *)'j');
+    rb_insert(t2, (void *)'k');
+
+    int t2_size = rb_size(t2);
+
+    RBTREE join = rb_join(t1, t2);
+    int join_size = rb_size(join);
+    
+    ASSERT(rb_size(join) == (t1_size + t2_size), "Size should be %d but got %d.", (t1_size + t2_size), join_size);
+}

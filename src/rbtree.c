@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 
 // Node specific functions
 RBNODE node_create(void *key);
@@ -12,6 +13,7 @@ RBNODE parent(RBNODE n);
 RBNODE grandparent(RBNODE n);
 RBNODE sibling(RBNODE n);
 RBNODE uncle(RBNODE n);
+COLOR node_color(RBNODE n);
 void free_node(RBNODE n);
 
 // rotation functions
@@ -55,6 +57,12 @@ void delete_case_6(RBTREE tree, RBNODE n);
 //
 // Traversal helpers
 void levelorder__help(RBNODE root, QUEUE q, void (*func)(RBNODE));
+
+//
+// Join Helpers
+RBNODE node_merge_left(RBNODE n, void *k, RBNODE m);
+RBNODE node_merge_right(RBNODE n, void *k, RBNODE m);
+RBNODE __join(RBTREE t1, void *k, RBTREE t2);
 
 ////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS
@@ -140,93 +148,42 @@ int rb_size(RBTREE tree)
     return find_subtree_size(tree->root);
 }
 
+/**
+ * @brief Joins two trees with the assertion that all the elements in t1 are **smaller** than the elements of t2
+ * @param t1 RBTREE with larger elements
+ * @param t2 RBTREE with smaller elements
+ * @returns a new RBTREE containing the elements of t1 and t2
+ */
 RBTREE rb_join(RBTREE t1, RBTREE t2)
 {
 
-    int t1r = rb_rank(t1);
-    int t2r = rb_rank(t2);
-
-    RBTREE joined_tree = rb_create(t1->cmp);
-
-    if (t1r > t2r) /* Assume T1 has larger rank */
+    // our lives are easy if one of the trees doesn't contain
+    // any elements
+    if (t1->root == NULL)
     {
-        // According to a Stanford lecture on balancing trees,
-        // if you don't have some key K to join the two trees
-        // with, delete the minimum value from the tree with
-        // the smaller rank, and use that value to join the
-        // two trees.
-        //
-        // http://web.stanford.edu/class/archive/cs/cs166/cs166.1146/lectures/03/Small03.pdf
-
-        RBNODE root = rb_remove(t2, rb_min(t2));
-        RBNODE v = t1->root;
-
-        while (v != NULL)
-        { /* Walk down the right of t1 */
-
-            if (find_node_rank(v) == t2r)
-            {
-                // We found the node w/ the same rank as t2
-                break;
-            }
-
-            v = v->right;
-        }
-
-        RBNODE p = parent(v);
-
-        // Using our joining node (root), let v be its left
-        // child, and the root of t2 be its right.
-        root->left = v;
-        root->right = t2->root;
-
-        if (p != NULL)
-        {
-            p->right = root;
-        }
-
-        __repair_insert(root);
-
-        rb_destroy(t2);
-        rb_destroy(t1);
-
-        joined_tree->root = root;
-    }
-    else /* if t2 has the larger rank, do the same but mirrored*/
-    {
-        RBNODE root = rb_remove(t1, rb_min(t1));
-        RBNODE v = t2->root;
-
-        while (v != NULL)
-        {
-
-            if (find_node_rank(v) == t1r)
-            {
-                break;
-            }
-
-            v = v->right;
-        }
-
-        RBNODE p = parent(v);
-
-        root->left = v;
-        root->right = t1->root;
-
-        if (p != NULL)
-        {
-            p->right = root;
-        }
-
-        __repair_insert(root);
-
-        rb_destroy(t2);
-        rb_destroy(t1);
-
-        joined_tree->root = root;
+        return t2;
     }
 
-    return joined_tree;
+    if (t2->root == NULL)
+    {
+        return t1;
+    }
+
+    void *middle_key = rb_max(t1);
+    rb_remove(t1, middle_key);
+
+    RBTREE t = rb_create(t1->cmp);
+    RBNODE new_root = __join(t1, middle_key, t2);
+    t->root = new_root;
+
+    // sever the connections to the nodes
+    t1->root = NULL;
+    t2->root = NULL;
+
+    rb_destroy(t1);
+    rb_destroy(t2);
+
+    return t;
 }
 
 void levelorder(RBTREE tree, void (*func)(RBNODE))
@@ -544,17 +501,20 @@ int find_node_rank(RBNODE n)
     return cnt;
 }
 
-int find_subtree_size(RBNODE n) {
+int find_subtree_size(RBNODE n)
+{
     if (n == NULL)
         return 0;
 
     int total = 1;
 
-    if (n->left != NULL) {
+    if (n->left != NULL)
+    {
         total += find_subtree_size(n->left);
     }
 
-    if (n->right != NULL) {
+    if (n->right != NULL)
+    {
         total += find_subtree_size(n->right);
     }
 
@@ -883,4 +843,131 @@ void delete_case_6(RBTREE tree, RBNODE n)
         s->left->color = BLACK;
         rotate_right(n->parent);
     }
+}
+
+// ////////////////////// ///////////////////////// ///////////////////////
+// Delete Helpers
+// ////////////////////// ///////////////////////// ///////////////////////
+
+RBNODE node_merge_right(RBNODE n, void *k, RBNODE m)
+{
+
+    int rn = find_node_rank(n);
+    int rm = find_node_rank(m);
+
+    RBNODE v = NULL;
+
+    if (rn == (floor(rm / 2) * 2))
+    {
+        v = node_create(k);
+        v->left = n;
+        v->right = m;
+        v->color = RED;
+    }
+    else
+    {
+        // Grabbing left and right nodes of n
+        RBNODE l = n->left;
+        RBNODE r = n->right;
+
+        COLOR c = n->color;
+        void *kp = n->key;
+
+        v = node_create(kp);
+        v->color = c;
+        v->left = l;
+        v->right = node_merge_right(r, k, m);
+
+        if (c == BLACK && (node_color(v->right) == RED) && (node_color(v->right->right) == RED))
+        {
+            v->right->right->color = RED;
+            rotate_left(v);
+        }
+    }
+
+    return v;
+}
+
+RBNODE node_merge_left(RBNODE n, void *k, RBNODE m)
+{
+
+    int rn = find_node_rank(n);
+    int rm = find_node_rank(m);
+
+    RBNODE v = NULL;
+
+    if (rn == (floor(rm / 2) * 2))
+    {
+        v = node_create(k);
+        v->left = n;
+        v->right = m;
+        v->color = RED;
+    }
+    else
+    {
+        RBNODE l = m->left;
+        RBNODE r = m->right;
+
+        COLOR c = m->color;
+        void *kp = m->key;
+
+        v = node_create(kp);
+        v->color = c;
+        v->right = r;
+        v->left = node_merge_left(n, k, l);
+
+        if (c == BLACK && (node_color(v->left) == RED) && (node_color(v->left->left) == RED))
+        {
+            v->left->left->color = BLACK;
+            rotate_right(v);
+        }
+    }
+    return v;
+}
+
+RBNODE __join(RBTREE t1, void *k, RBTREE t2)
+{
+    // Citations:
+    // Logic for these functions, as well as node_merge_left and
+    // node_merge_right come from "Parallel Ordered Sets Using
+    // Join" Blelloch, Ferizovic, & Sun
+
+    int r1 = rb_rank(t1);
+    int r2 = rb_rank(t2);
+
+    RBNODE n = NULL;
+
+    if (floor(r1 / 2) > floor(r2 / 2))
+    {
+        n = node_merge_right(t1->root, k, t2->root);
+        if ((node_color(n) == RED) && (node_color(n->right) == RED))
+        {
+            n->color = BLACK;
+        }
+    }
+    else if (floor(r2 / 2) > floor(r1 / 2))
+    {
+
+        n = node_merge_left(t1->root, k, t2->root);
+        if (node_color(n) == RED && (node_color(n->left) == RED))
+        {
+            n->color = BLACK;
+        }
+    }
+    else if ((node_color(t1->root) == BLACK) && (node_color(t2->root) == BLACK))
+    {
+        n = node_create(k);
+        n->left = t1->root;
+        n->right = t2->root;
+        n->color = RED;
+    }
+    else
+    {
+        n = node_create(k);
+        n->left = t1->root;
+        n->right = t2->root;
+        n->color = BLACK;
+    }
+
+    return n;
 }
