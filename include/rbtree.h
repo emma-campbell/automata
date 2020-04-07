@@ -27,7 +27,7 @@
  *        from red to black, but not vice-versa.
  * 3. All leaves are black.
  * 4. If a node is red, then both its children are black.
- * 4. Every path from a given node to any of its descendant leaf nodes
+ * 5. Every path from a given node to any of its descendant leaf nodes
  *    goes through the same number of black nodes (referred to as RANK)
  * 
  * SOURCES
