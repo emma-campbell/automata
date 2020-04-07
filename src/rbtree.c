@@ -1,6 +1,9 @@
 /**
- * 
+ * @file rbtree.c
+ * @author Emma Campbell
+ * @date 2020-03-24
  */
+
 #include <rbtree.h>
 
 #include <stdlib.h>
@@ -46,7 +49,6 @@ RBNODE insert(RBNODE root, RBNODE n, cmp_func_t cmp);
 // Declaring deletion helpers
 
 void delete_one_child(RBTREE tree, RBNODE n);
-
 void delete_case_1(RBTREE tree, RBNODE n);
 void delete_case_2(RBTREE tree, RBNODE n);
 void delete_case_3(RBTREE tree, RBNODE n);
@@ -63,6 +65,10 @@ void levelorder__help(RBNODE root, QUEUE q, void (*func)(RBNODE));
 RBNODE node_merge_left(RBNODE n, void *k, RBNODE m);
 RBNODE node_merge_right(RBNODE n, void *k, RBNODE m);
 RBNODE __join(RBTREE t1, void *k, RBTREE t2);
+
+//
+// Split Helpers
+RBNODE split_node(RBNODE n, void *k, cmp_func_t fun);
 
 ////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS
@@ -148,12 +154,6 @@ int rb_size(RBTREE tree)
     return find_subtree_size(tree->root);
 }
 
-/**
- * @brief Joins two trees with the assertion that all the elements in t1 are **smaller** than the elements of t2
- * @param t1 RBTREE with larger elements
- * @param t2 RBTREE with smaller elements
- * @returns a new RBTREE containing the elements of t1 and t2
- */
 RBTREE rb_join(RBTREE t1, RBTREE t2)
 {
 

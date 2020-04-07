@@ -21,9 +21,6 @@ PATHS			:= 	src/
 PATHI			:=	include/
 PATHT			:=	tests/
 
-# Unity Path -- For Unit Tests
-UNITY			:=	lib/Unity/src/
-
 BUILD_PATHS		:= 	$(PATHB) $(PATHD) $(PATHO) $(PATHR)
 
 COMPILE			:= 	$(CC) -c

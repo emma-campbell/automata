@@ -47,4 +47,6 @@ int main(void)
     RBTREE join2 = rb_join(t1, t2);
     print_tree(join2, print_node);
 
+    RBTREE split = rb_split(join2, (void *)'i');
+    print_tree(split, print_node);
 }

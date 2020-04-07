@@ -1,44 +1,49 @@
 /**
  * @author Emma Campbell
  * @date 2020-03-24
- *
- * Simple Red-Black Tree implementation. Red-black trees are self-balancing,
- * allowing for traversal in O(log n) time, making them rather efficient for 
- * re(trie)val of items. 
- * 
- * The insertion and deletion, as well as rearranging of the tree also all occur
- * in O(log n) time.
- *
- * **BASIC PROPERTIES OF RED-BLACK TREES**
- *
- * https://en.wikipedia.org/wiki/Red–black_tree
- *
- * 1. Each node is either red or black.
- * 2. The root of the tree is black.
- *  - This rule is sometimes ommited, because the root can be changed from red
- *    to black, but not vice-versa.
- * 3. All leaves are black.
- * 4. If a node is red, then both its children are black.
- * 5. Every path from a given node to any of its descendant NIL (leaf) nodes
- *    goes through the same number of black nodes
- * 
- * A lot of the information and algorithms described come from "Constructing Red
- *  Black Trees", Ralf Hinze 
- * (http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.2171&rep=rep1&type=pdf)
  * 
  * TODO: 
  * Implement the set operations on rebblack tree
  */
+
 #ifndef _RBTREE_h
 #define _RBTREE_h
 
 #include <common.h>
 #include <queue.h>
 
-enum color_t { BLACK, RED };
+/**
+ * Simple Red-Black Tree Implementation. Red-Black trees are 
+ * self-balancing, allowing for traversal in O(log n) time, making
+ * them rather efficient for the re(trie)val of items.
+ * 
+ * The insertion and deletion, as well as rebalancing of the tree also 
+ * all occur in O(log n) time.
+ * 
+ * BASIC PROPERTIES
+ * 1. Each node is either red or black
+ * 2. The root of the tree is black
+ *      - This rule is sometimes ommitted since the root can be changed
+ *        from red to black, but not vice-versa.
+ * 3. All leaves are black.
+ * 4. If a node is red, then both its children are black.
+ * 4. Every path from a given node to any of its descendant leaf nodes
+ *    goes through the same number of black nodes (referred to as RANK)
+ * 
+ * SOURCES
+ * [https://en.wikipedia.org/wiki/Red–black_tree]
+ * [http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.46.2171&rep=rep1&type=pdf]
+ */
+
+enum color_t
+{
+    BLACK,
+    RED
+};
 typedef enum color_t COLOR;
 
-struct rb_node {
+struct rb_node
+{
     struct rb_node *right;  //pointer to the right child
     struct rb_node *left;   //pointer to the left child
     struct rb_node *parent; //pointer to the parent node
@@ -48,9 +53,10 @@ struct rb_node {
 };
 
 typedef struct rb_node *RBNODE;
-typedef int (*cmp_func_t)(void*, void*);
+typedef int (*cmp_func_t)(void *, void *);
 
-struct rb_tree {
+struct rb_tree
+{
     RBNODE root;
     cmp_func_t cmp;
     QUEUE q;
@@ -58,6 +64,11 @@ struct rb_tree {
 
 typedef struct rb_tree *RBTREE;
 
+/**
+ * @brief Allocate space for a new Red-Black tree.
+ * @param cmp Comparison function used to traverse the tree.
+ * @returns new RBTREE.
+ */
 extern RBTREE rb_create(cmp_func_t cmp);
 
 /**
@@ -112,7 +123,7 @@ extern int rb_insert(RBTREE tree, void *key);
  * @param tree Pointer to the tree
  * @param key Pointer to the key
  * @returns the node, if found, null otherwise.
- */ 
+ */
 extern RBNODE rb_find(RBTREE tree, void *key);
 
 /**
@@ -121,7 +132,7 @@ extern RBNODE rb_find(RBTREE tree, void *key);
  * @param key Item to remove from the tree
  * @returns the key if it exists, otherwise {@code NULL}.
  */
-extern RBNODE rb_remove(RBTREE tree, void* key);
+extern RBNODE rb_remove(RBTREE tree, void *key);
 
 /**
  * @brief Clear the allocated storage for the tree
@@ -142,9 +153,9 @@ extern void rb_destroy(RBTREE tree);
  */
 extern void print_tree(RBTREE tree, void (*func)(RBNODE));
 
-//
+// //////////////////////////////////////////////////////////////////
 // Traversal Operations
-//
+// //////////////////////////////////////////////////////////////////
 
 /**
  * @brief Iterates through the tree in level order
@@ -174,9 +185,10 @@ extern void postorder(RBNODE n, void (*func)(RBNODE));
  */
 extern void inorder(RBNODE n, void (*func)(RBNODE));
 
-//
+// ////////////////////////////////////////////////////////////////////
 // Set Operations
-//
+// ////////////////////////////////////////////////////////////////////
+
 // TODO: Implement RB Set Operations
 
 /**
@@ -188,12 +200,18 @@ extern void inorder(RBNODE n, void (*func)(RBNODE));
  * @returns a new red-black tree that is the result of the join
  *          of t1 U t2
  * 
- * NOTE: An important assumption here is that one tree will 
- * have elements that are smaller than, and unique in 
- * comparison to the other tree (it need not matter which is 
- * the smaller of the two)
+ * NOTE: An important assumption here is that the elements of t1 will all be
+ * smaller than any element that exists in t2. 
  */
 extern RBTREE rb_join(RBTREE t1, RBTREE t2);
+
+/**
+ * @brief Splits a red black tree into two trees at the node with key matching k
+ * @param tree Tree being split
+ * @param k Key where splitting will occur
+ * @returns a new RBTREE with root at k
+ */
+extern RBTREE rb_split(RBTREE tree, void *k);
 
 // extern RBTREE rb_union(RBTREE t1, RBTREE t2);
 // extern RBTREE rb_intersection(RBTREE t1, RBTREE t2);
