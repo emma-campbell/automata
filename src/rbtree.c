@@ -220,6 +220,89 @@ RBTREE rb_intersection(RBTREE A, RBTREE B)
     return res;
 }
 
+bool rb_equals(RBTREE A, RBTREE B)
+{
+    RBTREE intersect = rb_intersection(A, B);
+    int int_size = rb_size(intersect);
+    if (int_size == rb_size(A) && int_size == rb_size(B))
+        return true;
+    else
+        return false;
+}
+
+bool rb_is_disjoint(RBTREE A, RBTREE B)
+{
+    RBTREE intersect = rb_intersection(A, B);
+    if (intersect->root == NULL)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+bool rb_is_subset(RBTREE A, RBTREE B)
+{
+    return rb_is_superset(B, A);
+}
+
+bool rb_is_superset(RBTREE A, RBTREE B)
+{
+    if (rb_size(A) < rb_size(B))
+    {
+        return false;
+    }
+    else
+    {
+        RBNODE curr = B->root;
+        RBNODE pre = NULL;
+
+        while (curr != NULL)
+        {
+            if (curr->left == NULL)
+            {
+                if (rb_find(A, curr->key) == NULL)
+                    return false;
+                curr = curr->right;
+            }
+            else
+            {
+                pre = curr->left;
+                while (pre->right != NULL && pre->right != curr)
+                {
+                    pre = pre->right;
+                }
+
+                if (pre->right == NULL)
+                {
+                    pre->right = curr;
+                    curr = curr->left;
+                }
+                else
+                {
+                    pre->right = NULL;
+                    if (rb_find(A, curr->key) == NULL)
+                        return false;
+                    curr = curr->right;
+                }
+            }
+        }
+        return true;
+    }
+}
+
+bool rb_is_subset_strict(RBTREE A, RBTREE B)
+{
+    return (rb_is_subset(A, B) && !rb_equals(A, B));
+}
+
+bool rb_is_superset_strict(RBTREE A, RBTREE B)
+{
+    return rb_is_subset_strict(B, A);
+}
+
 void levelorder(RBTREE tree, void (*func)(RBNODE))
 {
     levelorder__help(tree->root, tree->q, func);
@@ -285,7 +368,6 @@ void print_tree(RBTREE tree, void (*func)(RBNODE))
 {
     inorder(tree->root, func);
 }
-
 
 void **rb_to_array(RBTREE tree)
 {
@@ -1070,7 +1152,8 @@ void __fix_root(RBTREE res)
     }
 }
 
-void __add_to_array(void**arr, RBNODE root) {
+void __add_to_array(void **arr, RBNODE root)
+{
     static int pos = 0;
 
     if (root != NULL)

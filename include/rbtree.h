@@ -250,4 +250,48 @@ extern RBTREE rb_intersection(RBTREE A, RBTREE B);
  */
 extern bool rb_equals(RBTREE A, RBTREE B);
 
+/**
+ * @brief Returns whether the sets share any elements or not
+ * @param A Pointer to the first tree
+ * @param B Pointer to the second tree
+ * @return {@code true} if the trees don't share common elements,
+ *         {@code false} otherwise.
+ */
+extern bool rb_is_disjoint(RBTREE A, RBTREE B);
+
+/**
+ * @brief returns whether {@code A} is a subset of {@code B}
+ * @param A Pointer to the first tree
+ * @param B Pointer to the second tree
+ * @return {@code true} if A is a subset of B, {@code false}       *         otherwise. 
+ */
+extern bool rb_is_subset(RBTREE A, RBTREE B);
+
+/**
+ * @brief Returns whether A is a superset of B
+ * @param A Pointer to the first tree
+ * @param B Pointer to the second tree
+ * @return {@code true} if A is a superset of B, {@code false} 
+ *         otherwise.
+ */
+extern bool rb_is_superset(RBTREE A, RBTREE B);
+
+/**
+ * @brief Returns whether A is a strict subset of B
+ * @param A Pointer to the first tree
+ * @param B Pointer to the second tree
+ * @return {@code true} if A is a strict subset of B, 
+ *         {@code false} otherwise.
+ */
+extern bool rb_is_subset_strict(RBTREE A, RBTREE B);
+
+/**
+ * @brief Returns whether A is a strict superset of B
+ * @param A Pointer to the first tree
+ * @param B Pointer to the second tree
+ * @return {@code true} if A is a strict superset of B, 
+ *         {@code false} otherwise.
+ */
+extern bool rb_is_superset_strict(RBTREE A, RBTREE B);
+
 #endif // _RBTREE_h

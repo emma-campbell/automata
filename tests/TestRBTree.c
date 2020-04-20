@@ -1,4 +1,6 @@
-#include "narwhal.h"
+#include <narwhal.h>
+#include <stdbool.h>
+
 #include <rbtree.h>
 
 int cmp_char(void *c1, void *c2)
@@ -248,7 +250,7 @@ TEST (RB_TO_ARRAY) {
 
     print_tree(t1, print_node);
     printf("\n");
-    
+
     void **arr = rb_to_array(t1);
 
     int size = 0;
@@ -258,4 +260,116 @@ TEST (RB_TO_ARRAY) {
     }
 
     ASSERT(size == 4, "Expected array of size 4, got %d", size);
+}
+
+TEST (RB_EQUALS) {
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'b');
+    rb_insert(t2, (void *)'a');
+    rb_insert(t2, (void *)'c');
+    rb_insert(t2, (void *)'d');
+
+    ASSERT(rb_equals(t1, t2) == true, "Expected true, got false.");
+}
+
+TEST (RB_IS_DISJOINT) {
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'b');
+    rb_insert(t2, (void *)'a');
+    rb_insert(t2, (void *)'c');
+    rb_insert(t2, (void *)'d');
+
+    RBTREE t3 = rb_create(&cmp_char);
+    rb_insert(t3, (void *)'z');
+    rb_insert(t3, (void *)'y');
+    rb_insert(t3, (void *)'x');
+    rb_insert(t3, (void *)'w');
+
+    ASSERT(rb_is_disjoint(t1, t3) == true, "Excepted true, got false (t1, t3)");
+    ASSERT(rb_is_disjoint(t1, t2) == false, "Expected false, got true (t1, t2)");
+}
+
+TEST (RB_IS_SUBSET) {
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'b');
+    rb_insert(t2, (void *)'a');
+
+    ASSERT(rb_is_subset(t2, t1) == true, "Expected true, got false (t2, t1)");
+    ASSERT(rb_is_subset(t1, t2) == false, "Expected false, got true (t2, t1)");
+}
+
+TEST(RB_IS_SUPERSET)
+{
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'b');
+    rb_insert(t2, (void *)'a');
+
+    ASSERT(rb_is_superset(t1, t2) == true, "Expected true, got false (t2, t1)");
+    ASSERT(rb_is_superset(t2, t1) == false, "Expected false, got true (t2, t1)");
+}
+
+TEST(RB_IS_SUBSET_STRICT)
+{
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'b');
+    rb_insert(t2, (void *)'a');
+
+    RBTREE t3 = rb_create(&cmp_char);
+    rb_insert(t3, (void *)'b');
+    rb_insert(t3, (void *)'a');
+
+    ASSERT(rb_is_subset_strict(t2, t1) == true, "Expected true, got false (t2, t1)");
+    ASSERT(rb_is_subset_strict(t2, t3) == false, "Expected false, got true (t2, t3)");
+}
+
+TEST(RB_IS_SUEPRSET_STRICT)
+{
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    RBTREE t2 = rb_create(&cmp_char);
+    rb_insert(t2, (void *)'b');
+    rb_insert(t2, (void *)'a');
+
+    RBTREE t3 = rb_create(&cmp_char);
+    rb_insert(t3, (void *)'b');
+    rb_insert(t3, (void *)'a');
+    rb_insert(t3, (void *)'c');
+    rb_insert(t3, (void *)'d');
+
+    ASSERT(rb_is_superset_strict(t1, t2) == true, "Expected true, got false (t2, t1)");
+    ASSERT(rb_is_superset_strict(t1, t3) == false, "Expected false, got true (t2, t3)");
 }
