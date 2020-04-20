@@ -186,6 +186,8 @@ TEST (RB_DIFFERENCE) {
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
     rb_insert(t1, (void *)'e');
+    rb_insert(t1, (void *)'g');
+    
 
     print_tree(t1, print_node);
     printf("\n");
@@ -203,8 +205,8 @@ TEST (RB_DIFFERENCE) {
     print_tree(diff, print_node);
 
     ASSERT(
-        rb_size(diff) == 2,
-        "Size should be 2 but got %d.",
+        rb_size(diff) == 4,
+        "Size should be 4 but got %d.",
         rb_size(diff));
 }
 
@@ -214,8 +216,7 @@ TEST (RB_INTERSECTION) {
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
-    rb_insert(t1, (void *)'e');
-
+    
     print_tree(t1, print_node);
     printf("\n");
 
@@ -235,4 +236,26 @@ TEST (RB_INTERSECTION) {
         rb_size(inter) == 2,
         "Size should be 2 but got %d.",
         rb_size(inter));
+}
+
+TEST (RB_TO_ARRAY) {
+
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    print_tree(t1, print_node);
+    printf("\n");
+    
+    void **arr = rb_to_array(t1);
+
+    int size = 0;
+
+    while (arr[size] != NULL) {
+        printf("%c ", (char)arr[size++]);
+    }
+
+    ASSERT(size == 4, "Expected array of size 4, got %d", size);
 }

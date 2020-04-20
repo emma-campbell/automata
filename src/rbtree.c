@@ -74,6 +74,9 @@ void delete_all(RBTREE A, RBTREE B);
 
 void __intersect(RBTREE A, RBTREE B, RBTREE res, RBNODE n);
 
+void __fix_root(RBTREE res);
+void __add_to_array(void **arr, RBNODE root);
+
 ////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS
 ////////////////////////////////////////////////////////////////
@@ -109,10 +112,11 @@ void *rb_min(RBTREE tree)
 
 int rb_insert(RBTREE tree, void *key)
 {
-    if (rb_find(tree, key) != NULL) {
+    if (rb_find(tree, key) != NULL)
+    {
         return 0;
     }
-    
+
     RBNODE new_node = node_create(key);
     tree->root = insert(tree->root, new_node, tree->cmp);
     return 1;
@@ -184,42 +188,42 @@ RBTREE rb_join(RBTREE t1, RBTREE t2)
     RBNODE new_root = __join(t1->root, middle_key, t2->root);
     t->root = new_root;
 
-    // sever the connections to the nodes
-    t1->root = NULL;
-    t2->root = NULL;
-
-    rb_destroy(t1);
-    rb_destroy(t2);
-
     return t;
 }
 
-RBTREE rb_union(RBTREE A, RBTREE B) 
+RBTREE rb_union(RBTREE A, RBTREE B)
 {
     return rb_join(A, B);
 }
 
-RBTREE rb_difference(RBTREE A, RBTREE B) {
+RBTREE rb_difference(RBTREE A, RBTREE B)
+{
     RBTREE res = rb_create(A->cmp);
-    insert_all(A, res);
-    delete_all(B, res);
+    __insert_all(A, A->root, res);
+    __delete_all(B, B->root, res);
+    __fix_root(res);
     return res;
 }
 
-RBTREE rb_intersection(RBTREE A, RBTREE B) {
+RBTREE rb_intersection(RBTREE A, RBTREE B)
+{
     RBTREE res = rb_create(A->cmp);
 
-    if (rb_size(A) < rb_size(B)) {
+    if (rb_size(A) < rb_size(B))
+    {
         __intersect(A, B, res, A->root);
-    } else {
-        __intersect(A, B, res, B->root);
     }
+    else
+    {
+        __intersect(B, A, res, B->root);
+    }
+    return res;
 }
+
 void levelorder(RBTREE tree, void (*func)(RBNODE))
 {
     levelorder__help(tree->root, tree->q, func);
 }
-
 
 void preorder(RBNODE n, void (*func)(RBNODE))
 {
@@ -282,6 +286,13 @@ void print_tree(RBTREE tree, void (*func)(RBNODE))
     inorder(tree->root, func);
 }
 
+
+void **rb_to_array(RBTREE tree)
+{
+    void **arr = malloc(rb_size(tree) * sizeof(void *));
+    __add_to_array(arr, tree->root);
+    return arr;
+}
 
 //////////////////////////////////////////////////////////////////
 // PRIVATE FUNCTIONS
@@ -1005,70 +1016,67 @@ RBNODE __join(RBNODE n, void *k, RBNODE m)
 }
 
 // ////////////////////////////////////////////////////////////
-// SPLIT HELPERS
+// SET OPERATION HELPERS
 // ////////////////////////////////////////////////////////////
 
-// RBNODE node_split(RBNODE n, void*k, cmp_func_t cmp) 
-// {
-
-//     RBNODE tmp = NULL;
-
-//     if (n == NULL)
-//     {
-//         return NULL;
-//     }
-
-//     if (cmp(n->key, k) == 0)
-//     {
-//         return n;
-//     }
-
-//     if (cmp(n->key, k) > 0) 
-//     {
-//         tmp = node_split(n->left, k, cmp);
-//         tmp->right = __join(n->right, n->key, tmp->right);
-//     }
-
-//     if (cmp(n->key, k) < 0)
-//     {
-//         tmp = node_split(n->right, k, cmp);
-//         tmp->left = __join(n->left, n->key, tmp->left);
-        
-//     }
-
-//     return tmp;
-// }
-
-void __insert_all(RBTREE tree, RBNODE n, RBTREE res) {
-    if (n != NULL) {
+void __insert_all(RBTREE tree, RBNODE n, RBTREE res)
+{
+    if (n != NULL)
+    {
         __insert_all(tree, n->left, res);
         rb_insert(res, n->key);
         __insert_all(tree, n->right, res);
     }
 }
 
-void insert_all(RBTREE tree, RBTREE res) {
+void insert_all(RBTREE tree, RBTREE res)
+{
     __insert_all(tree, tree->root, res);
 }
 
-void __delete_all(RBTREE tree, RBNODE n,  RBTREE res) {
-    if (n != NULL) {
+void __delete_all(RBTREE tree, RBNODE n, RBTREE res)
+{
+    if (n != NULL)
+    {
         __delete_all(tree, n->left, res);
-        rb_remove(res, n->key);
         __delete_all(tree, n->right, res);
+        rb_remove(res, n->key);
     }
 }
 
-void delete_all(RBTREE A, RBTREE B) {
+void delete_all(RBTREE A, RBTREE B)
+{
     __delete_all(A, A->root, B);
 }
 
-void __intersect(RBTREE A, RBTREE B, RBTREE res, RBNODE n) {
-    if (n != NULL) {
+void __intersect(RBTREE A, RBTREE B, RBTREE res, RBNODE n)
+{
+    if (n != NULL)
+    {
         __intersect(A, B, res, n->left);
-        if (rb_find(B, n->key) != NULL) {
+        if (rb_find(B, n->key) != NULL)
+        {
             rb_insert(res, n->key);
         }
         __intersect(A, B, res, n->right);
+    }
+}
+
+void __fix_root(RBTREE res)
+{
+    while (res->root->parent != NULL)
+    {
+        res->root = res->root->parent;
+    }
+}
+
+void __add_to_array(void**arr, RBNODE root) {
+    static int pos = 0;
+
+    if (root != NULL)
+    {
+        __add_to_array(arr, root->left);
+        arr[pos++] = root->key;
+        __add_to_array(arr, root->right);
     }
 }

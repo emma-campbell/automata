@@ -3,7 +3,8 @@ TARGET			:=  auto
 CC				:= 	gcc
 STD				:= 	-std=c99
 DEBUG			:= 	-g
-CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra -Wno-unused-parameter
+NO				:= 	-Wno-unused-parameter -Wno-pointer-to-int-cast
+CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra $(NO)
 
 SHOW_COMMAND	:=	@printf "%-15s%s\n"
 SHOW_CC			:=  $(SHOW_COMMAND) "[ $(CC) ]"
@@ -45,7 +46,7 @@ endif
 all: $(BUILD_PATHS) $(PATHB)$(TARGET)
 	@$(RM) $(TARGET)
 	$(SHOW_LINK) "$(PATHB)$(TARGET) -> $(TARGET)"
-	$(SILENCE)@ln -s $(PATHB)$(TARGET) $(TARGET)
+	$(SILENCE) @ln -s $(PATHB)$(TARGET) $(TARGET)
 
 $(PATHB)$(TARGET): $(OBJS)
 	$(SHOW_CC) $@
@@ -93,7 +94,7 @@ $(PATHD)%.d: $(PATHT)%.c
 # Targets that create neccesary directories
 # #############################################################################
 
-$(PATHB): 
+$(PATHB):
 	mkdir -p $(PATHB)
 
 $(PATHD):
@@ -112,8 +113,8 @@ $(PATHR):
 
 .PHONY: clean
 clean:
-	$(SHOW_CLEAN) $(PATHO)*.o 
-	$(SHOW_CLEAN) $(TARGET) 
+	$(SHOW_CLEAN) $(PATHO)*.o
+	$(SHOW_CLEAN) $(TARGET)
 	$(SHOW_CLEAN) $(PATHB)$(TARGET)
 	$(SHOW_CLEAN) $(PATHB)*.o
 	$(SHOW_CLEAN) run_tests
