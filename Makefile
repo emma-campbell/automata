@@ -1,12 +1,13 @@
-TARGET			:=  auto
+TARGET			:=  	auto
 
-CC				:= 	gcc
-STD				:= 	-std=c99
+CC			:= 	gcc
+STD			:= 	-std=c99
 DEBUG			:= 	-g
-CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra -Wno-unused-parameter
+NO			:= 	-Wno-unused-parameter -Wno-pointer-to-int-cast 
+CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra $(NO)
 
-SHOW_COMMAND	:=	@printf "%-15s%s\n"
-SHOW_CC			:=  $(SHOW_COMMAND) "[ $(CC) ]"
+SHOW_COMMAND		:=	@printf "%-15s%s\n"
+SHOW_CC			:=  	$(SHOW_COMMAND) "[ $(CC) ]"
 SHOW_CLEAN		:= 	$(SHOW_COMMAND) "[ CLEAN ]"
 SHOW_LINK		:=	$(SHOW_COMMAND) "[ LINK ]"
 
@@ -25,12 +26,13 @@ BUILD_PATHS		:= 	$(PATHB) $(PATHD) $(PATHO) $(PATHR)
 
 COMPILE			:= 	$(CC) -c
 LINK			:= 	$(CC)
-DEPEND 			:=  $(CC) -MM -MG -MF
+DEPEND 			:=  	$(CC) -MM -MG -MF
 
 # Includes public headers from include/ directory
 CFLAGS 			+= 	-I$(PATHI) -I$(PATHS) -DTEST
 SRCS 			:= 	$(wildcard $(PATHS)*.c)
 OBJS			:=	$(SRCS:$(PATHS)%.c=$(PATHO)%.o)
+LIBS			:=	-lm
 
 ifneq ($(V),)
 	SILENCE     :=
@@ -45,7 +47,7 @@ endif
 all: $(BUILD_PATHS) $(PATHB)$(TARGET)
 	@$(RM) $(TARGET)
 	$(SHOW_LINK) "$(PATHB)$(TARGET) -> $(TARGET)"
-	$(SILENCE)@ln -s $(PATHB)$(TARGET) $(TARGET)
+	$(SILENCE) @ln -s $(PATHB)$(TARGET) $(TARGET)
 
 $(PATHB)$(TARGET): $(OBJS)
 	$(SHOW_CC) $@
@@ -73,17 +75,17 @@ run_tests: $(SOURCES)
 # Compiles the source files
 $(PATHO)%.o:: $(PATHS)%.c
 	$(SHOW_CC) $@
-	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@ $(LIBS)
 
 # Compiles the test files
 $(PATHO)%.o:: $(PATHT)%.c
 	$(SHOW_CC) $@
-	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@ $(LIBS)
 
 # Compiles unity test framework
 $(PATHO)%.o:: $(NARWHAL)%.c $(NARWHAL)%.h
 	$(SHOW_CC) $@
-	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@ $(LIBS)
 
 # Generates the dependency files to the build/depends directory.
 $(PATHD)%.d: $(PATHT)%.c

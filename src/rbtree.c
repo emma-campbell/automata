@@ -214,7 +214,9 @@ RBTREE rb_intersection(RBTREE A, RBTREE B) {
     } else {
         __intersect(A, B, res, B->root);
     }
+    return res;
 }
+
 void levelorder(RBTREE tree, void (*func)(RBNODE))
 {
     levelorder__help(tree->root, tree->q, func);
