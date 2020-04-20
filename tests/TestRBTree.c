@@ -2,45 +2,21 @@
 #include <stdbool.h>
 
 #include <rbtree.h>
-
-int cmp_char(void *c1, void *c2)
-{
-
-    int a = (int)c1;
-    int b = (int)c2;
-
-    if (a == b)
-    {
-        return 0;
-    }
-    else if (a < b)
-    {
-        return -1;
-    }
-    else
-    {
-        return 1;
-    }
-}
-
-void print_node(RBNODE n)
-{
-    printf("%c ", (char)n->key);
-}
+#include <char_functions.h>
 
 TEST(RB_CONSTRUCTOR) {
-    ASSERT(rb_create(&cmp_char) != NULL);
+    ASSERT(rb_create(CMP_CHAR) != NULL);
 }
 
 TEST(RB_INSERT)
 {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     ASSERT(rb_find(tree, (void *)'x') != NULL); 
 }
 
 TEST (RB_NO_DUPLICATE_KEYS) {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     rb_insert(tree, (void *)'x');
 
@@ -49,7 +25,7 @@ TEST (RB_NO_DUPLICATE_KEYS) {
 
 TEST(RB_REMOVE) 
 {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     rb_insert(tree, (void *)'a');
     rb_insert(tree, (void *)'c');
@@ -62,7 +38,7 @@ TEST(RB_REMOVE)
 }
 
 TEST (RB_MAX) {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     rb_insert(tree, (void *)'a');
     rb_insert(tree, (void *)'c');
@@ -72,7 +48,7 @@ TEST (RB_MAX) {
 }
 
 TEST (RB_MIN) {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     rb_insert(tree, (void *)'a');
     rb_insert(tree, (void *)'c');
@@ -82,7 +58,7 @@ TEST (RB_MIN) {
 }
 
 TEST (RB_HEIGHT) {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     rb_insert(tree, (void *)'a');
     rb_insert(tree, (void *)'c');
@@ -99,7 +75,7 @@ TEST (RB_HEIGHT) {
  * We use this to test the validity of the rank function.
  */
 TEST (RB_RANK) {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     rb_insert(tree, (void *)'a');
     rb_insert(tree, (void *)'c');
@@ -113,7 +89,7 @@ TEST (RB_RANK) {
 }
 
 TEST (RB_SIZE) {
-    RBTREE tree = rb_create(&cmp_char);
+    RBTREE tree = rb_create(CMP_CHAR);
     rb_insert(tree, (void *)'x');
     rb_insert(tree, (void *)'a');
     rb_insert(tree, (void *)'c');
@@ -125,7 +101,7 @@ TEST (RB_SIZE) {
 
 TEST (RB_JOIN) {
 
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
@@ -134,7 +110,7 @@ TEST (RB_JOIN) {
     
     int t1_size = rb_size(t1);
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'f');
     rb_insert(t2, (void *)'g');
     rb_insert(t2, (void *)'h');
@@ -151,7 +127,7 @@ TEST (RB_JOIN) {
 }
 
 TEST (RB_JOIN_NO_DUPLICATES) {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
@@ -160,7 +136,7 @@ TEST (RB_JOIN_NO_DUPLICATES) {
 
     int t1_size = rb_size(t1);
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'f');
     rb_insert(t2, (void *)'g');
     rb_insert(t2, (void *)'h');
@@ -182,7 +158,7 @@ TEST (RB_JOIN_NO_DUPLICATES) {
 }
 
 TEST (RB_DIFFERENCE) {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
@@ -191,20 +167,20 @@ TEST (RB_DIFFERENCE) {
     rb_insert(t1, (void *)'g');
     
 
-    print_tree(t1, print_node);
+    print_tree(t1, PRINT_CHAR);
     printf("\n");
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'c');
     rb_insert(t2, (void *)'h');
     rb_insert(t2, (void *)'a');
     rb_insert(t2, (void *)'k');
 
-    print_tree(t2, print_node);
+    print_tree(t2, PRINT_CHAR);
     printf("\n");
 
     RBTREE diff = rb_difference(t1, t2);
-    print_tree(diff, print_node);
+    print_tree(diff, PRINT_CHAR);
 
     ASSERT(
         rb_size(diff) == 4,
@@ -213,26 +189,26 @@ TEST (RB_DIFFERENCE) {
 }
 
 TEST (RB_INTERSECTION) {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
     
-    print_tree(t1, print_node);
+    print_tree(t1, PRINT_CHAR);
     printf("\n");
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'c');
     rb_insert(t2, (void *)'h');
     rb_insert(t2, (void *)'a');
     rb_insert(t2, (void *)'k');
 
-    print_tree(t2, print_node);
+    print_tree(t2, PRINT_CHAR);
     printf("\n");
 
     RBTREE inter = rb_intersection(t1, t2);
-    print_tree(inter, print_node);
+    print_tree(inter, PRINT_CHAR);
 
     ASSERT(
         rb_size(inter) == 2,
@@ -242,13 +218,13 @@ TEST (RB_INTERSECTION) {
 
 TEST (RB_TO_ARRAY) {
 
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
 
-    print_tree(t1, print_node);
+    print_tree(t1, PRINT_CHAR);
     printf("\n");
 
     void **arr = rb_to_array(t1);
@@ -263,13 +239,13 @@ TEST (RB_TO_ARRAY) {
 }
 
 TEST (RB_EQUALS) {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'b');
     rb_insert(t2, (void *)'a');
     rb_insert(t2, (void *)'c');
@@ -279,19 +255,19 @@ TEST (RB_EQUALS) {
 }
 
 TEST (RB_IS_DISJOINT) {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'b');
     rb_insert(t2, (void *)'a');
     rb_insert(t2, (void *)'c');
     rb_insert(t2, (void *)'d');
 
-    RBTREE t3 = rb_create(&cmp_char);
+    RBTREE t3 = rb_create(CMP_CHAR);
     rb_insert(t3, (void *)'z');
     rb_insert(t3, (void *)'y');
     rb_insert(t3, (void *)'x');
@@ -302,13 +278,13 @@ TEST (RB_IS_DISJOINT) {
 }
 
 TEST (RB_IS_SUBSET) {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'b');
     rb_insert(t2, (void *)'a');
 
@@ -318,13 +294,13 @@ TEST (RB_IS_SUBSET) {
 
 TEST(RB_IS_SUPERSET)
 {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'b');
     rb_insert(t2, (void *)'a');
 
@@ -334,17 +310,17 @@ TEST(RB_IS_SUPERSET)
 
 TEST(RB_IS_SUBSET_STRICT)
 {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'b');
     rb_insert(t2, (void *)'a');
 
-    RBTREE t3 = rb_create(&cmp_char);
+    RBTREE t3 = rb_create(CMP_CHAR);
     rb_insert(t3, (void *)'b');
     rb_insert(t3, (void *)'a');
 
@@ -354,17 +330,17 @@ TEST(RB_IS_SUBSET_STRICT)
 
 TEST(RB_IS_SUEPRSET_STRICT)
 {
-    RBTREE t1 = rb_create(&cmp_char);
+    RBTREE t1 = rb_create(CMP_CHAR);
     rb_insert(t1, (void *)'b');
     rb_insert(t1, (void *)'a');
     rb_insert(t1, (void *)'c');
     rb_insert(t1, (void *)'d');
 
-    RBTREE t2 = rb_create(&cmp_char);
+    RBTREE t2 = rb_create(CMP_CHAR);
     rb_insert(t2, (void *)'b');
     rb_insert(t2, (void *)'a');
 
-    RBTREE t3 = rb_create(&cmp_char);
+    RBTREE t3 = rb_create(CMP_CHAR);
     rb_insert(t3, (void *)'b');
     rb_insert(t3, (void *)'a');
     rb_insert(t3, (void *)'c');
