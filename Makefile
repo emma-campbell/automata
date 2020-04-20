@@ -1,13 +1,13 @@
-TARGET			:=  	auto
+TARGET			:=  auto
 
-CC			:= 	gcc
-STD			:= 	-std=c99
+CC				:= 	gcc
+STD				:= 	-std=c99
 DEBUG			:= 	-g
-NO			:= 	-Wno-unused-parameter -Wno-pointer-to-int-cast 
+NO				:= 	-Wno-unused-parameter -Wno-pointer-to-int-cast
 CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra $(NO)
 
-SHOW_COMMAND		:=	@printf "%-15s%s\n"
-SHOW_CC			:=  	$(SHOW_COMMAND) "[ $(CC) ]"
+SHOW_COMMAND	:=	@printf "%-15s%s\n"
+SHOW_CC			:=  $(SHOW_COMMAND) "[ $(CC) ]"
 SHOW_CLEAN		:= 	$(SHOW_COMMAND) "[ CLEAN ]"
 SHOW_LINK		:=	$(SHOW_COMMAND) "[ LINK ]"
 
@@ -26,13 +26,12 @@ BUILD_PATHS		:= 	$(PATHB) $(PATHD) $(PATHO) $(PATHR)
 
 COMPILE			:= 	$(CC) -c
 LINK			:= 	$(CC)
-DEPEND 			:=  	$(CC) -MM -MG -MF
+DEPEND 			:=  $(CC) -MM -MG -MF
 
 # Includes public headers from include/ directory
 CFLAGS 			+= 	-I$(PATHI) -I$(PATHS) -DTEST
 SRCS 			:= 	$(wildcard $(PATHS)*.c)
 OBJS			:=	$(SRCS:$(PATHS)%.c=$(PATHO)%.o)
-LIBS			:=	-lm
 
 ifneq ($(V),)
 	SILENCE     :=
@@ -75,17 +74,17 @@ run_tests: $(SOURCES)
 # Compiles the source files
 $(PATHO)%.o:: $(PATHS)%.c
 	$(SHOW_CC) $@
-	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@ $(LIBS)
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
 # Compiles the test files
 $(PATHO)%.o:: $(PATHT)%.c
 	$(SHOW_CC) $@
-	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@ $(LIBS)
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
 # Compiles unity test framework
 $(PATHO)%.o:: $(NARWHAL)%.c $(NARWHAL)%.h
 	$(SHOW_CC) $@
-	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@ $(LIBS)
+	$(SILENCE) $(COMPILE) $(CFLAGS) $< -o $@
 
 # Generates the dependency files to the build/depends directory.
 $(PATHD)%.d: $(PATHT)%.c
@@ -95,7 +94,7 @@ $(PATHD)%.d: $(PATHT)%.c
 # Targets that create neccesary directories
 # #############################################################################
 
-$(PATHB): 
+$(PATHB):
 	mkdir -p $(PATHB)
 
 $(PATHD):
@@ -114,8 +113,8 @@ $(PATHR):
 
 .PHONY: clean
 clean:
-	$(SHOW_CLEAN) $(PATHO)*.o 
-	$(SHOW_CLEAN) $(TARGET) 
+	$(SHOW_CLEAN) $(PATHO)*.o
+	$(SHOW_CLEAN) $(TARGET)
 	$(SHOW_CLEAN) $(PATHB)$(TARGET)
 	$(SHOW_CLEAN) $(PATHB)*.o
 	$(SHOW_CLEAN) run_tests

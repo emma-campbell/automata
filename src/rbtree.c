@@ -74,6 +74,7 @@ void delete_all(RBTREE A, RBTREE B);
 
 void __intersect(RBTREE A, RBTREE B, RBTREE res, RBNODE n);
 
+void __fix_root(RBTREE res);
 ////////////////////////////////////////////////////////////////
 // PUBLIC FUNCTIONS
 ////////////////////////////////////////////////////////////////
@@ -184,13 +185,6 @@ RBTREE rb_join(RBTREE t1, RBTREE t2)
     RBNODE new_root = __join(t1->root, middle_key, t2->root);
     t->root = new_root;
 
-    // sever the connections to the nodes
-    t1->root = NULL;
-    t2->root = NULL;
-
-    rb_destroy(t1);
-    rb_destroy(t2);
-
     return t;
 }
 
@@ -201,8 +195,9 @@ RBTREE rb_union(RBTREE A, RBTREE B)
 
 RBTREE rb_difference(RBTREE A, RBTREE B) {
     RBTREE res = rb_create(A->cmp);
-    insert_all(A, res);
-    delete_all(B, res);
+    __insert_all(A, A->root, res);
+    __delete_all(B, B->root, res);
+    __fix_root(res);
     return res;
 }
 
@@ -212,7 +207,7 @@ RBTREE rb_intersection(RBTREE A, RBTREE B) {
     if (rb_size(A) < rb_size(B)) {
         __intersect(A, B, res, A->root);
     } else {
-        __intersect(A, B, res, B->root);
+        __intersect(B, A, res, B->root);
     }
     return res;
 }
@@ -1042,7 +1037,8 @@ RBNODE __join(RBNODE n, void *k, RBNODE m)
 // }
 
 void __insert_all(RBTREE tree, RBNODE n, RBTREE res) {
-    if (n != NULL) {
+    if (n != NULL)
+    {
         __insert_all(tree, n->left, res);
         rb_insert(res, n->key);
         __insert_all(tree, n->right, res);
@@ -1056,8 +1052,8 @@ void insert_all(RBTREE tree, RBTREE res) {
 void __delete_all(RBTREE tree, RBNODE n,  RBTREE res) {
     if (n != NULL) {
         __delete_all(tree, n->left, res);
-        rb_remove(res, n->key);
         __delete_all(tree, n->right, res);
+        rb_remove(res, n->key);
     }
 }
 
@@ -1072,5 +1068,11 @@ void __intersect(RBTREE A, RBTREE B, RBTREE res, RBNODE n) {
             rb_insert(res, n->key);
         }
         __intersect(A, B, res, n->right);
+    }
+}
+
+void __fix_root(RBTREE res) {
+    while (res->root->parent != NULL) {
+        res->root = res->root->parent;
     }
 }

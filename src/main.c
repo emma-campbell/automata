@@ -56,9 +56,9 @@ void do_difference(void)
     RBTREE diff = rb_difference(t1, t2);
     print_tree(diff, print_node);
 
-    printf("Size of difference set: %d.\nExpected: 2", rb_size(diff));
-    rb_destroy(t1);
-    rb_destroy(t2);
+    printf("\nSize of difference set: %d.\nExpected: 3", rb_size(diff));
+    // rb_destroy(t1);
+    // rb_destroy(t2);
 }
 
 void do_intersection(void)
@@ -86,7 +86,7 @@ void do_intersection(void)
     RBTREE inter = rb_intersection(t1, t2);
     print_tree(inter, print_node);
 
-    printf("Size of intersection set: %d\nExpected: 2", rb_size(inter));
+    printf("\nSize of intersection set: %d\nExpected: 2", rb_size(inter));
     rb_destroy(t1);
     rb_destroy(t2);
 }
@@ -94,5 +94,5 @@ void do_intersection(void)
 int main(void)
 {
 	do_difference();
-	do_intersection();
+	// do_intersection();
 }
