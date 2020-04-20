@@ -91,8 +91,26 @@ void do_intersection(void)
     rb_destroy(t2);
 }
 
+void convert_to_array() {
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+    rb_insert(t1, (void *)'e');
+
+    void **arr = rb_to_array(t1);
+
+    int i = 0;
+    while (arr[i] != NULL) {
+        printf("%c ", (char)arr[i]);
+        i++;
+    }
+}
+
 int main(void)
 {
-	do_difference();
+	// do_difference();
 	// do_intersection();
+    convert_to_array();
 }

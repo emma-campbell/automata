@@ -185,6 +185,13 @@ extern void postorder(RBNODE n, void (*func)(RBNODE));
  */
 extern void inorder(RBNODE n, void (*func)(RBNODE));
 
+/**
+ * @brief Converts an RB into an array
+ * @param tree Pointer to the tree
+ * @return array of void* pointers
+ */
+extern void **rb_to_array(RBTREE tree);
+
 // ////////////////////////////////////////////////////////////////////
 // Set Operations
 // ////////////////////////////////////////////////////////////////////
@@ -234,5 +241,13 @@ extern RBTREE rb_difference(RBTREE A, RBTREE B);
  * The intersection of two sets A and B, denoted A n B = { x : x ∈ A ^ x ∈ B }
  */
 extern RBTREE rb_intersection(RBTREE A, RBTREE B);
+
+/**
+ * @brief Returns whether the two rbtree's are identical
+ * @param A Pointer to the first tree
+ * @param B Pointer to the second tree
+ * @return {@code true} if the tree's are identical, {@code false} otherwise.
+ */
+extern bool rb_equals(RBTREE A, RBTREE B);
 
 #endif // _RBTREE_h

@@ -237,3 +237,25 @@ TEST (RB_INTERSECTION) {
         "Size should be 2 but got %d.",
         rb_size(inter));
 }
+
+TEST (RB_TO_ARRAY) {
+
+    RBTREE t1 = rb_create(&cmp_char);
+    rb_insert(t1, (void *)'b');
+    rb_insert(t1, (void *)'a');
+    rb_insert(t1, (void *)'c');
+    rb_insert(t1, (void *)'d');
+
+    print_tree(t1, print_node);
+    printf("\n");
+    
+    void **arr = rb_to_array(t1);
+
+    int size = 0;
+
+    while (arr[size] != NULL) {
+        printf("%c ", (char)arr[size++]);
+    }
+
+    ASSERT(size == 4, "Expected array of size 4, got %d", size);
+}
