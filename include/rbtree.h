@@ -12,6 +12,8 @@
 #include <common.h>
 #include <queue.h>
 
+#define INT2VOIDP(i) (void*)(uintptr_t)(i)
+
 /**
  * Simple Red-Black Tree Implementation. Red-Black trees are 
  * self-balancing, allowing for traversal in O(log n) time, making
@@ -54,6 +56,7 @@ struct rb_node
 
 typedef struct rb_node *RBNODE;
 typedef int (*cmp_func_t)(void *, void *);
+typedef bool (*predicate)(RBNODE n, void*value);
 
 struct rb_tree
 {
@@ -184,6 +187,15 @@ extern void postorder(RBNODE n, void (*func)(RBNODE));
  * @param func Function applied to each node
  */
 extern void inorder(RBNODE n, void (*func)(RBNODE));
+
+/**
+ * @brief Returns the RBNODE that meets the predicate condition
+ * 
+ * @param n Pointer to the root node
+ * @param p Predicate function
+ * @return RBNODE meets the conditions of p
+ */
+extern RBNODE predicate_inorder(RBNODE n, predicate p, void*val);
 
 /**
  * @brief Converts an RB into an array

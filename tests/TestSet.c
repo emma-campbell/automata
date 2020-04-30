@@ -114,3 +114,85 @@ TEST (SET_INTERSECTION) {
 
     ASSERT(uni->size == 1, "Expected 1, got %d", uni->size);
 }
+
+TEST (SET_EQUALS) {
+    SET s = set_create(compare, print);
+    set_insert(s, (void *)4);
+    set_insert(s, (void *)5);
+    set_insert(s, (void *)6);
+
+    SET s2 = set_create(compare, print);
+    set_insert(s2, (void *)4);
+    set_insert(s2, (void *)5);
+    set_insert(s2, (void *)6);
+
+    ASSERT(set_equals(s, s2) == true);
+}
+
+TEST (SET_DISJOINT) {
+    SET s = set_create(compare, print);
+    set_insert(s, (void *)4);
+    set_insert(s, (void *)5);
+    set_insert(s, (void *)6);
+
+    SET s2 = set_create(compare, print);
+    set_insert(s2, (void *)7);
+    set_insert(s2, (void *)8);
+    set_insert(s2, (void *)9);
+
+    ASSERT(set_disjoint(s, s2) == true);
+}
+
+TEST (SET_SUBSET) {
+    SET s = set_create(compare, print);
+    set_insert(s, (void *)4);
+    set_insert(s, (void *)5);
+    set_insert(s, (void *)6);
+
+    SET s2 = set_create(compare, print);
+    set_insert(s2, (void *)6);
+    set_insert(s2, (void *)5);
+
+    ASSERT(set_subset(s2, s) == true);
+}
+
+TEST (SET_SUPERSET) {
+    SET s = set_create(compare, print);
+    set_insert(s, (void *)4);
+    set_insert(s, (void *)5);
+    set_insert(s, (void *)6);
+
+    SET s2 = set_create(compare, print);
+    set_insert(s2, (void *)6);
+    set_insert(s2, (void *)5);
+
+    ASSERT(set_superset(s, s2) == true);
+}
+
+TEST (SET_SUBSET_STRICT) {
+    SET s = set_create(compare, print);
+    set_insert(s, (void *)4);
+    set_insert(s, (void *)5);
+    set_insert(s, (void *)6);
+
+    SET s2 = set_create(compare, print);
+    set_insert(s2, (void *)4);
+    set_insert(s2, (void *)6);
+    set_insert(s2, (void *)5);
+
+    ASSERT(set_subset_strict(s, s2) == false);
+}
+
+TEST (SET_SUPERSET_STRICT) {
+    SET s = set_create(compare, print);
+    set_insert(s, (void *)4);
+    set_insert(s, (void *)5);
+    set_insert(s, (void *)6);
+
+    SET s2 = set_create(compare, print);
+    set_insert(s2, (void *)4);
+    set_insert(s2, (void *)6);
+    set_insert(s2, (void *)5);
+
+    ASSERT(set_superset_strict(s, s2) == false);
+}

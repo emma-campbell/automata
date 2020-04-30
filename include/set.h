@@ -83,6 +83,15 @@ extern bool set_remove(SET set, void *el);
  */
 extern bool set_contains(SET set, void *el);
 
+/**
+ * @brief Returns a pointer to the node if it is found in the set
+ * 
+ * @param set Pointer to the set
+ * @param el element we are trying to find.
+ * @return RBNODE 
+ */
+extern RBNODE set_find(SET set, predicate p, void *val);
+
 // ======================================================================
 // Set Attributes
 // ======================================================================
@@ -204,5 +213,4 @@ extern bool set_superset_strict(SET A, SET B);
  * @param func Pointer to the function
  */
 extern void set_foreach(SET set, void(*func)(RBNODE));
-
 #endif // _SET_H

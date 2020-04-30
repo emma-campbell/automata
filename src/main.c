@@ -6,32 +6,34 @@
  */
 
 #include <stdio.h>
-#include <rbtree.h>
-
-int cmp_char(void *c1, void *c2) {
-	int a = (int)c1;
-	int b = (int)c2;
-
-	if (a == b) 
-	{
-		return 0;
-	}
-	else if (a < b) 
-	{
-		return -1;
-	} 
-	else 
-	{
-		return 1;
-	}
-}
-
-void print_node(RBNODE n)
-{
-	printf("%c ", (char)n->key);
-}
+#include <dfa.h>
 
 int main(void)
 {
 
+	DFA d = dfa_create();
+	
+	dfa_add_state(d, (void*)'a', false);
+	dfa_add_state(d, (void*)'b', false);
+	dfa_add_state(d, (void*)'c', false);
+	
+	print_set(d->states);
+
+	STATE c = dfa_grab_state(d, (void *)'c');
+	STATE a = dfa_grab_state(d, (void*)'a');
+
+
+	if ((char)a->label == 'a')
+		printf("\nGrab state 'a': SUCCESS\n");
+	else {
+		printf("\nGrab state 'a': FAIL\n");
+		printf("Got: %c", (char)a->label);
+	}
+
+	if ((char)c->label == 'c')
+		printf("Grab state 'c': SUCCESS\n");
+	else
+		printf("Grab state 'c': FAIL\n");
+
+	return 0;
 }

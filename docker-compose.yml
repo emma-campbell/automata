@@ -1,0 +1,9 @@
+version: '3.5'
+services:
+
+    linux:
+        build: .
+        container_name: linux
+        stdin_open: true
+        tty: true
+

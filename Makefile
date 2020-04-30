@@ -3,7 +3,7 @@ TARGET			:=  auto
 CC				:= 	gcc
 STD				:= 	-std=c99
 DEBUG			:= 	-g
-NO				:= 	-Wno-unused-parameter -Wno-pointer-to-int-cast
+NO				:= 	-Wno-unused-parameter -Wno-pointer-to-int-cast -Wno-return-type
 CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra $(NO)
 
 SHOW_COMMAND	:=	@printf "%-15s%s\n"
@@ -127,9 +127,22 @@ clean:
 	$(SILENCE)rm -rf $(PATHB)$(TARGET)
 
 # ##############################################################################
+# Debugging Commands
+# ##############################################################################
+
+.PHONY: memcheck
+memcheck:
+	$(SILENCE) valgrind --tool=memcheck --leak-check=full --log-file="mem_report.txt" "./$(TARGET)"
+
+.PHONY: debug
+debug:
+	$(SILENCE) gdb ./$(TARGET)
+
+# ##############################################################################
 # Debug Make
 #
 # This command will print any variable to understand wth is going on
 # ##############################################################################
+
 print-% :
 	@echo $* = $($*)
