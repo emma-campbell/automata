@@ -380,8 +380,7 @@ RBNODE predicate_inorder(RBNODE n, predicate p, void*val)
     if (n->right != NULL)
     {
         return predicate_inorder(n->right, p, val);
-    }
-    
+    } 
 }
 
 void print_tree(RBTREE tree, void (*func)(RBNODE))

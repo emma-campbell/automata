@@ -1,6 +1,7 @@
 #include <narwhal.h>
 
 #include <dfa.h>
+#include <common.h>
 
 TEST (DFA_CREATE) {
     DFA d = dfa_create();
@@ -30,16 +31,16 @@ TEST (DFA_FIND_STATE) {
 TEST (DFA_ADD_TRANSITION) {
     DFA d = dfa_create();
 
-    dfa_add_state(d, (void*)'a', false);
-    dfa_add_state(d, (void *)'b', false);
-    dfa_add_state(d, (void*)'c', false);
+    dfa_add_state(d, CHAR2VOIDP('a'), false);
+    dfa_add_state(d, CHAR2VOIDP('b'), false);
+    dfa_add_state(d, CHAR2VOIDP('c'), false);
 
     print_set(d->states);
 
-    dfa_add_transition(d, (void *)'a', (void *)'c', (void *)'c');
+    dfa_add_transition(d, CHAR2VOIDP('a'), CHAR2VOIDP('c'), CHAR2VOIDP('c'));
 
-    STATE a = dfa_grab_state(d, 'a');
-    TRANSITION t = dfa_grab_transition(d, a, 'c');
+    STATE a = dfa_grab_state(d, CHAR2VOIDP('a'));
+    TRANSITION t = dfa_grab_transition(d, a, CHAR2VOIDP('c'));
 
     ASSERT(t != NULL);
 }

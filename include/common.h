@@ -6,6 +6,7 @@
 #include <assert.h>
 
 #define INT2CHAR(i) (char)(uintptr_t)(i)
+#define CHAR2VOIDP(i) (void*)(char)(i)
 #define INT2VOIDP(i) (void*)(uintptr_t)(i)
 #define VOIDP2INT(i) (uintptr_t)(void*)(i)
 
