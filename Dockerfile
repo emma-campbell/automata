@@ -10,7 +10,8 @@ RUN apt-get -y install \
     git \
     gcc \
     vim \
-    gdb
+    gdb \
+    bash
 
 ENV SRC_PATH /src
 

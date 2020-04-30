@@ -138,6 +138,10 @@ memcheck:
 debug:
 	$(SILENCE) gdb ./$(TARGET)
 
+.PHONY: shell
+shell:
+	docker exec -it linux /bin/bash
+
 # ##############################################################################
 # Debug Make
 #

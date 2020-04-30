@@ -18,22 +18,14 @@ int main(void)
 	dfa_add_state(d, (void*)'c', false);
 	
 	print_set(d->states);
+	printf("\n");
 
-	STATE c = dfa_grab_state(d, (void *)'c');
-	STATE a = dfa_grab_state(d, (void*)'a');
+	char label = 'a';
+	STATE A = dfa_grab_state(d, INT2VOIDP(label));
 
-
-	if ((char)a->label == 'a')
-		printf("\nGrab state 'a': SUCCESS\n");
-	else {
-		printf("\nGrab state 'a': FAIL\n");
-		printf("Got: %c", (char)a->label);
-	}
-
-	if ((char)c->label == 'c')
-		printf("Grab state 'c': SUCCESS\n");
-	else
-		printf("Grab state 'c': FAIL\n");
+	printf("State A:\n");
+	printf("%c ", (char)A->label);
+	printf("\n");
 
 	return 0;
 }

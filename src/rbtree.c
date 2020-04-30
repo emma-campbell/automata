@@ -365,23 +365,23 @@ void inorder(RBNODE n, void (*func)(RBNODE))
 }
 
 RBNODE predicate_inorder(RBNODE n, predicate p, void*val)
-{
+{  
     if (n == NULL)
-        return NULL;
+	    return NULL;
 
-    if (p(n, val))
-        return n;
-        
     if (n->left != NULL)
     {
-        predicate_inorder(n->left, p, val);
+        return predicate_inorder(n->left, p, val);
     }
 
+    if (p(n, val) == true)
+        return n;
 
     if (n->right != NULL)
     {
-        predicate_inorder(n->right, p, val);
+        return predicate_inorder(n->right, p, val);
     }
+    
 }
 
 void print_tree(RBTREE tree, void (*func)(RBNODE))

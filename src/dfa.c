@@ -24,6 +24,7 @@ STATE find_state(SET states, void *val);
 // ===================================================================
 // Public Functions
 // ===================================================================
+
 DFA dfa_create()
 {
     return __dfa_create(&transition, init_alphabet());
@@ -195,6 +196,11 @@ STATE find_state(SET states, void*label)
 {
     RBTREE tree = states->tree;
 
-    STATE s = predicate_inorder(tree->root, state_label_is, label)->key;
-    return (STATE)s;
+    RBNODE n = predicate_inorder(tree->root, state_label_is, label);
+    STATE s = (STATE)n->key;
+    
+    if (s != NULL)
+	    return s;
+    else
+	    return NULL;
 }
