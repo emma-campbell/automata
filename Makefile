@@ -65,7 +65,7 @@ test: run_tests
 
 run_tests: $(SOURCES)
 	$(SHOW_CC) $^
-	$(SILENCE) $(LINK) $(CFLAGS) -I$(NARWHAL) -I$(PATHS) -I$(PATHI) -o $@ $^
+	$(SILENCE) $(LINK) -I$(NARWHAL) -I$(PATHS) -I$(PATHI) -o $@ $^
 
 # ##########################################################################
 # Compilation Rules

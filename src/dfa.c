@@ -170,7 +170,7 @@ TRANSITION find_transition(SET transitions, void*val) {
     RBTREE tree = transitions->tree;
 
     TRANSITION t = predicate_inorder(tree->root, transition_label_is, val)->key;
-    return (TRANSITION)t;
+    return VOID2TRANSITION(t);
 }
 
 STATE transition(STATE from, void*input)
@@ -197,10 +197,9 @@ STATE find_state(SET states, void*label)
     RBTREE tree = states->tree;
 
     RBNODE n = predicate_inorder(tree->root, state_label_is, label);
-    STATE s = (STATE)n->key;
     
-    if (s != NULL)
-	    return s;
+    if (n != NULL)
+	    return VOID2STATE(n->key);
     else
 	    return NULL;
 }

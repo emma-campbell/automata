@@ -12,8 +12,6 @@
 #include <common.h>
 #include <queue.h>
 
-#define INT2VOIDP(i) (void*)(uintptr_t)(i)
-
 /**
  * Simple Red-Black Tree Implementation. Red-Black trees are 
  * self-balancing, allowing for traversal in O(log n) time, making
@@ -67,9 +65,13 @@ struct rb_tree
 
 typedef struct rb_tree *RBTREE;
 
+#define VOID2STATE(n) (STATE)(void*)(n)
+#define VOID2TRANSITION(n) (TRANSITION)(void*)(n)
+
 /**
- * @brief Allocate space for a new Red-Black tree.
- * @param cmp Comparison function used to traverse the tree.
+ * @brief Create a new RBTREE object
+ *
+ * @param cmp Comparison function for elements in the tree
  * @returns new RBTREE.
  */
 extern RBTREE rb_create(cmp_func_t cmp);

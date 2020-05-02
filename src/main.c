@@ -20,12 +20,11 @@ int main(void)
 	print_set(d->states);
 	printf("\n");
 
-	char label = 'a';
-	STATE A = dfa_grab_state(d, INT2VOIDP(label));
+	char from = 'a';
+	char to = 'c';
+	char on = 'g';
 
-	printf("State A:\n");
-	printf("%c ", (char)A->label);
-	printf("\n");
-
+	dfa_add_transition(d, INT2VOIDP(from), INT2VOIDP(to), INT2VOIDP(on));
+	
 	return 0;
 }
