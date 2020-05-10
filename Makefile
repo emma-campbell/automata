@@ -1,13 +1,13 @@
-TARGET			:=  auto
+TARGET			:=  	auto
 
-CC				:= 	gcc
-STD				:= 	-std=c99
+CC			:= 	gcc
+STD			:= 	-std=c99
 DEBUG			:= 	-g
-NO				:= 	-Wno-unused-parameter -Wno-pointer-to-int-cast -Wno-return-type
+NO			:= 	-Wno-unused-parameter
 CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra $(NO)
 
-SHOW_COMMAND	:=	@printf "%-15s%s\n"
-SHOW_CC			:=  $(SHOW_COMMAND) "[ $(CC) ]"
+SHOW_COMMAND		:=	@printf "%-15s%s\n"
+SHOW_CC			:=  	$(SHOW_COMMAND) "[ $(CC) ]"
 SHOW_CLEAN		:= 	$(SHOW_COMMAND) "[ CLEAN ]"
 SHOW_LINK		:=	$(SHOW_COMMAND) "[ LINK ]"
 
@@ -26,9 +26,10 @@ BUILD_PATHS		:= 	$(PATHB) $(PATHD) $(PATHO) $(PATHR)
 
 COMPILE			:= 	$(CC) -c
 LINK			:= 	$(CC)
-DEPEND 			:=  $(CC) -MM -MG -MF
+DEPEND 			:=  	$(CC) -MM -MG -MF
 
 # Includes public headers from include/ directory
+
 CFLAGS 			+= 	-I$(PATHI) -I$(PATHS) -DTEST
 SRCS 			:= 	$(wildcard $(PATHS)*.c)
 OBJS			:=	$(SRCS:$(PATHS)%.c=$(PATHO)%.o)
@@ -132,7 +133,8 @@ clean:
 
 .PHONY: memcheck
 memcheck:
-	$(SILENCE) valgrind --tool=memcheck --leak-check=full --log-file="mem_report.txt" "./$(TARGET)"
+	$(SILENCE) valgrind --tool=memcheck --leak-check=full --track-origins=yes --log-file="mem_report.txt" "./$(TARGET)" && \
+		less mem_report.txt
 
 .PHONY: debug
 debug:
@@ -140,7 +142,15 @@ debug:
 
 .PHONY: shell
 shell:
-	docker exec -it linux /bin/bash
+	$(SILENCE) docker exec -it linux /bin/bash
+
+.PHONY: container
+container:
+	$(SILENCE) docker-compose up --build -d
+
+.PHONY: setup
+setup:
+	make container && make shell
 
 # ##############################################################################
 # Debug Make
