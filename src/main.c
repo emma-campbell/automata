@@ -1,5 +1,6 @@
 #include <dfa.h>
 #include <nfa.h>
+#include <transformer.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -88,6 +89,24 @@ NFA make_first_nfa()
 	return nfa;
 }
 
+NFA make_second_nfa()
+{
+
+	NFA nfa = new_NFA(5);
+	
+	NFA_add_transition(nfa, 0, 'c', 0);
+    	NFA_add_transition(nfa, 0, 'c', 1);
+        NFA_add_transition_all(nfa, 0, 0);
+    	NFA_add_transition(nfa, 1, 'o', 2);
+    	NFA_add_transition(nfa, 2, 'd', 3);
+    	NFA_add_transition(nfa, 3, 'e', 4);
+   	NFA_add_transition_all(nfa, 4, 4);
+
+	NFA_set_accepting(nfa, 4);
+	return nfa;
+
+}
+
 void test_dfa(DFA d)
 {
 	char input[256];
@@ -152,7 +171,7 @@ void test_nfa(NFA n)
 int main(void)
 {
 	DFA d1, d2, d3, d4;
-	NFA n1;
+	NFA n1, n2;
 
 	printf("Project 1 by Emma Campbell\n");
 	printf("Testing DFA the recognizes exactly the string \"csc173\"...\n");
@@ -180,5 +199,8 @@ int main(void)
 	n1 = make_first_nfa();
 	test_nfa(n1);
 	
-
+	printf("\n\nTesting NFA that recognizes strings containing \"code\"...\n");
+	
+	n2 = make_second_nfa();
+	test_nfa(n2);
 }
