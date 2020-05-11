@@ -83,9 +83,9 @@ void dfa_set_transition_str(DFA dfa, int src, char*str, int dst)
 	}
 }
 
-void DFA_set_transitions_all(DFA dfa, int src, int dst)
+void DFA_set_transition_all(DFA dfa, int src, int dst)
 {
-	for (int i=0; i<126; i++)
+	for (int i=0; i<128; i++)
 	{
 		dfa->transitions[src][i] = dst;
 	}

@@ -5,7 +5,7 @@
 
 DFA make_first_dfa()
 {
-	DFA dfa = new_DFA(6);
+	DFA dfa = new_DFA(7);
 	
 	DFA_set_transition(dfa, 0, 'c', 1);
 	DFA_set_transition(dfa, 1, 's', 2);
@@ -17,6 +17,61 @@ DFA make_first_dfa()
 	DFA_set_accepting(dfa, 6);
 	return dfa;
 }
+
+DFA make_second_dfa()
+{
+	/**
+	 * Any string that starts with CAT
+	 */
+	DFA dfa = new_DFA(4);
+
+	DFA_set_transition(dfa, 0, 'c', 1);
+	DFA_set_transition(dfa, 1, 'a', 2);
+	DFA_set_transition(dfa, 2, 't', 3);
+	DFA_set_transition_all(dfa, 3, 3);
+
+	DFA_set_accepting(dfa, 3);
+	return dfa;
+}
+
+
+DFA make_third_dfa()
+{
+	/**
+	 * Accepts an even number of 1's
+	 */
+	DFA dfa = new_DFA(2);
+	
+	DFA_set_transition(dfa, 0, '0', 1);
+	DFA_set_transition(dfa, 1, '1', 1);
+	DFA_set_transition(dfa, 1, '0', 0);
+	DFA_set_transition(dfa, 0, '1', 0);
+
+	DFA_set_accepting(dfa, 0);
+	return dfa;
+}
+
+
+DFA make_fourth_dfa()
+{
+	DFA dfa = new_DFA(4);
+
+	DFA_set_transition(dfa, 0, '0', 1);
+	DFA_set_transition(dfa, 1, '0', 0);
+
+	DFA_set_transition(dfa, 1, '1', 2);
+	DFA_set_transition(dfa, 2, '1', 1);
+
+	DFA_set_transition(dfa, 2, '0', 3);
+	DFA_set_transition(dfa, 3, '0', 2);
+
+	DFA_set_transition(dfa, 3, '1', 0);
+	DFA_set_transition(dfa, 0, '1', 3);
+
+	DFA_set_accepting(dfa, 0);
+	return dfa;
+}
+
 
 void test_dfa(DFA d)
 {
@@ -50,11 +105,30 @@ void test_dfa(DFA d)
 
 int main(void)
 {
-	DFA d1;
+	DFA d1, d2, d3, d4;
 
 	printf("Project 1 by Emma Campbell\n");
 	printf("Testing DFA the recognizes exactly the string \"csc173\"...\n");
 
 	d1 = make_first_dfa();
 	test_dfa(d1);
+
+	printf("\n\nTesting DFA that recognizes the string that starts with \"cat\"...\n");
+
+	d2 = make_second_dfa();
+	test_dfa(d2);
+
+	printf("\n\nTesting DFA that recognizes the string that has a even number of 0's...\n");
+
+	d3 = make_third_dfa();
+	test_dfa(d3);
+
+	printf("\n\nTesting DFA that recognizes the string that has an even number of 0's and 1's...\n");
+
+	d4 = make_fourth_dfa();
+	test_dfa(d4);
+	
+
+	
+
 }
