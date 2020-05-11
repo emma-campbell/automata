@@ -3,7 +3,7 @@ TARGET			:=  	auto
 CC			:= 	gcc
 STD			:= 	-std=c99
 DEBUG			:= 	-g
-NO			:= 	-Wno-unused-parameter
+NO			:= 	-Wno-unused-parameter -Wno-sign-compare
 CFLAGS			:= 	$(STD) $(DEBUG) -Wall -Werror -Wextra $(NO)
 
 SHOW_COMMAND		:=	@printf "%-15s%s\n"
