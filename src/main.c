@@ -1,4 +1,5 @@
 #include <dfa.h>
+#include <nfa.h>
 
 #include <stdio.h>
 #include <string.h>
@@ -72,6 +73,20 @@ DFA make_fourth_dfa()
 	return dfa;
 }
 
+NFA make_first_nfa()
+{
+	NFA nfa = new_NFA(5);
+	
+	NFA_add_transition(nfa, 0, 'c', 0);
+    	NFA_add_transition(nfa, 0, 'c', 1);
+        NFA_add_transition_all(nfa, 0, 0);
+    	NFA_add_transition(nfa, 1, 'o', 2);
+    	NFA_add_transition(nfa, 2, 'd', 3);
+    	NFA_add_transition(nfa, 3, 'e', 4);
+    
+	NFA_set_accepting(nfa, 4);
+	return nfa;
+}
 
 void test_dfa(DFA d)
 {
@@ -103,9 +118,41 @@ void test_dfa(DFA d)
 	DFA_free(d);
 }
 
+void test_nfa(NFA n)
+{
+	char input[256];
+
+	do
+	{
+		printf("Enter an input (\"quit\" to quit): ");
+		scanf("%s[^\n]", input);
+
+		if (!strcmp(input, "quit"))
+		{
+			break;
+		}
+
+		bool res = NFA_execute(n, input);
+
+		if (res)
+		{
+			printf("Result for \"%s\": true\n", input);
+		}
+		else 
+		{
+			printf("Result for \"%s\": false\n", input);
+		}
+
+	} while (strcmp(input, "quit"));
+
+	NFA_free(n);
+}
+
+
 int main(void)
 {
 	DFA d1, d2, d3, d4;
+	NFA n1;
 
 	printf("Project 1 by Emma Campbell\n");
 	printf("Testing DFA the recognizes exactly the string \"csc173\"...\n");
@@ -129,6 +176,9 @@ int main(void)
 	test_dfa(d4);
 	
 
+	printf("\n\nTesting NFA that recognizes strings ending in \"code\"...\n");
+	n1 = make_first_nfa();
+	test_nfa(n1);
 	
 
 }
