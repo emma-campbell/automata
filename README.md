@@ -34,4 +34,27 @@ git submodule init
 git submodule update
 ```
 
-Then, all you need is the make test target, `make test`, to run the unit testing.
+# Testing
+
+Optionally, if you care to run the unit tests there is a *slight* amount of setting up to do. Run the following to set up the submodule [Narwhal](https://github.com/vberlier/narwhal).
+
+```bash
+git submodule init
+git submodule update
+```
+To run the unit tests, all you need to do is use the command `make test`. As of right now for some reason, unit tests only run on MacOS and I can't seem to get past duplicate TEST definition.
+
+# Docker
+
+To use some of the debugging tools such as valgrind and gdb, I needed to set up a VM, which i decided to accomplish using docker. To get the image up and running, first check that you have docker properly installed on your machine by running
+
+```bash
+docker --version
+docker-compose --version
+```
+Once you confirm that docker is installed, run the command 
+
+```bash
+docker-compose up --build -d
+```
+to get the image up and running and `make shell` to access the shell. 
