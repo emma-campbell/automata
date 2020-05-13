@@ -58,7 +58,7 @@ extern void NFA_add_transition_all(NFA nfa, int src, int dst);
 /**
  * Set whether the given NFA's state is accepting or not.
  */
-extern void NFA_set_accepting(NFA nfa, int state, bool value);
+extern void NFA_set_accepting(NFA nfa, int state);
 
 /**
  * Return true if the given NFA's state is an accepting state.
