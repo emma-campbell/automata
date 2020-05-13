@@ -56,6 +56,11 @@ extern void NFA_add_transition_str(NFA nfa, int src, char *str, int dst);
 extern void NFA_add_transition_all(NFA nfa, int src, int dst);
 
 /**
+ * Add a transition on all values except the given
+ */
+extern void NFA_add_transition_all_except(NFA nfa, int src, int dst, char except);
+
+/**
  * Set whether the given NFA's state is accepting or not.
  */
 extern void NFA_set_accepting(NFA nfa, int state);

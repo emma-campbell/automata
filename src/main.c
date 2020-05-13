@@ -117,6 +117,46 @@ NFA make_second_nfa()
 
 }
 
+NFA make_third_nfa()
+{
+	NFA nfa = new_NFA(20);
+	NFA_add_transition_all(nfa, 0,0);
+	NFA_add_transition_all(nfa, 1,1);
+  	NFA_add_transition_all(nfa, 2,2);
+  	NFA_add_transition_all(nfa, 3,3);
+  	NFA_add_transition_all(nfa, 4,4);
+  	NFA_add_transition_all(nfa, 5,5);
+  	NFA_add_transition_all(nfa, 6,6);
+  	NFA_add_transition_all(nfa, 7,7);
+  	NFA_add_transition_all(nfa, 8,8);
+  	NFA_add_transition_all(nfa, 9,9);
+  	NFA_add_transition_all(nfa, 10,10);
+  
+	NFA_add_transition(nfa,0, 'a', 1);
+  
+	NFA_add_transition(nfa,1, 'a', 10);
+  
+	NFA_add_transition(nfa,0, 'g', 2);
+	NFA_add_transition(nfa,2, 'g', 10);
+	NFA_add_transition(nfa,0, 'h', 3);
+	NFA_add_transition(nfa,3, 'h', 10);
+	NFA_add_transition(nfa,0, 'i', 4);
+	NFA_add_transition(nfa,4,'i', 10);
+	NFA_add_transition(nfa,0, 'o', 5);
+	NFA_add_transition(nfa,5, 'o', 10);
+	NFA_add_transition(nfa,0, 's', 6);
+	NFA_add_transition(nfa,6, 's', 10);
+	NFA_add_transition(nfa,0, 't', 7);
+	NFA_add_transition(nfa,7, 't', 10);
+	NFA_add_transition(nfa,0, 'n', 8);
+	NFA_add_transition(nfa,8, 'n', 9);
+	NFA_add_transition(nfa,9, 'n', 10);
+	NFA_add_transition(nfa,0, 'w', 11);
+	NFA_add_transition(nfa,11, 'w', 10);
+	NFA_set_accepting(nfa, 10);
+	return nfa;
+}
+
 void test_dfa(DFA d)
 {
 	char input[256];
@@ -178,10 +218,39 @@ void test_nfa(NFA n)
 }
 
 
+void test_washington(NFA n)
+{
+	char input[256];
+
+	do
+	{
+		printf("Enter an input (\"quit\" to quit): ");
+		scanf("%s[^\n]", input);
+
+		if (!strcmp(input, "quit"))
+		{
+			break;
+		}
+
+		bool res = NFA_execute(n, input);
+
+		if (res)
+		{
+			printf("\"%s\" is not a partial anagram of \"washington\"\n", input);
+		}
+		else 
+		{
+			printf("\"%s\" is a partial anagram of \"washington\"\n", input);
+		}
+
+	} while (strcmp(input, "quit"));
+
+	NFA_free(n);
+}
 int main(void)
 {
 	DFA d1, d2, d3, d4;
-	NFA n1, n2;
+	NFA n1, n2, n3;
 
 	printf("Project 1 by Emma Campbell\n");
 	printf("Testing DFA the recognizes exactly the string \"csc173\"...\n");
@@ -213,4 +282,9 @@ int main(void)
 	
 	n2 = make_second_nfa();
 	test_nfa(n2);
-}
+
+	printf("\n\nTesting NFA that recognizes strings that are partial anagrams of 'washington'...\n");
+	n3 = make_third_nfa();
+	test_washington(n3);
+
+}	
