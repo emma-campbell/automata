@@ -35,7 +35,7 @@ int BitSet_maxValue() {
  * Allocate, initialize and return a new (empty) BitSet.
  */
 BitSet new_BitSet() {
-	BitSet this = malloc(sizeof(struct BitSet));
+	BitSet this = malloc(sizeof(BitSet));
 	this->bits = 0;
 	return this;
 }

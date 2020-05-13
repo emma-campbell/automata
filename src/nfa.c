@@ -8,23 +8,27 @@
 
 struct NFA {
 	int size;
-	Set **transitions;
+	IntHashSet**transitions;
 	BitSet accepting;
 	int curr;
 };
 
 NFA new_NFA(int nstates) 
 {
-	NFA nfa = malloc(sizeof(struct NFA));
-	nfa->transitions = (Set**)malloc(sizeof(Set*));
+	NFA nfa = NULL;
+	nfa = malloc(sizeof(struct NFA));
+
+	if (nfa == NULL) return NULL;
+
+	nfa->transitions = malloc(nstates*sizeof(IntHashSet*));
 
 	for (int i=0; i<nstates; i++)
 	{
-		nfa->transitions[i] = malloc(sizeof(Set));
+		nfa->transitions[i] = malloc(128*sizeof(IntHashSet));
 
 		for (int j=0; j<128; j++)
 		{
-			*(*(nfa->transitions+i)+j) = new_Set(nstates);
+			*(*(nfa->transitions+i)+j) = new_IntHashSet(nstates);
 		}
 	}
 	nfa->size = nstates;
@@ -35,6 +39,15 @@ NFA new_NFA(int nstates)
 
 void NFA_free(NFA nfa)
 {
+	for (int i=0; i<nfa->size; i++)
+	{
+		for (int j=0; j<128; j++)
+		{
+			IntHashSet_free(*(*(nfa->transitions+i)+j));
+		}
+		free(nfa->transitions[i]);
+	}
+	free(nfa->transitions);
 	BitSet_free(nfa->accepting);
 	free(nfa);
 }
@@ -44,14 +57,14 @@ int NFA_get_size(NFA nfa)
 	return nfa->size;
 }
 
-Set NFA_get_transitions(NFA nfa, int state, char sym)
+IntHashSet NFA_get_transitions(NFA nfa, int state, char sym)
 {
 	return *(nfa->transitions[state]+sym);
 }
 
 void NFA_add_transition(NFA nfa, int src, char sym, int dst)
 {
-	Set_insert(*(nfa->transitions[src]+sym), dst);
+	IntHashSet_insert(*(nfa->transitions[src]+sym), dst);
 }
 
 void NFA_add_transition_str(NFA nfa, int src, char *str, int dst);
@@ -63,7 +76,7 @@ void NFA_add_transition_all(NFA nfa, int src, int dst)
 		if (Set_isEmpty(*(nfa->transitions[src]+i))) 
 		{
 
-			Set_insert(*(nfa->transitions[src]+i), dst);
+			IntHashSet_insert(*(nfa->transitions[src]+i), dst);
 		}
 	}
 }
@@ -87,14 +100,14 @@ bool __execute(NFA nfa, char*input, int st)
 
 	if (strlen(input) == 1)
 	{
-		Set set = NFA_get_transitions(nfa, src, input[0]);
-		if (Set_isEmpty(set)) return false;
+		IntHashSet set = NFA_get_transitions(nfa, src, input[0]);
+		if (IntHashSet_isEmpty(set)) return false;
 
-		SetIterator it = Set_iterator(set);
+		IntHashSetIterator it = IntHashSet_iterator(set);
 
-		while (SetIterator_hasNext(it))
+		while (IntHashSetIterator_hasNext(it))
 		{
-			int cmp = SetIterator_next(it);
+			int cmp = IntHashSetIterator_next(it);
 			if (NFA_get_accepting(nfa, cmp))
 			{
 				return true;
@@ -103,18 +116,18 @@ bool __execute(NFA nfa, char*input, int st)
 		return false;
 	}
 
-	Set set = NFA_get_transitions(nfa, src, input[0]);
+	IntHashSet set = NFA_get_transitions(nfa, src, input[0]);
 
-	if (Set_isEmpty(set))
+	if (IntHashSet_isEmpty(set))
 	{
 		return false;
 	}
 
-	SetIterator it = Set_iterator(set);
+	IntHashSetIterator it = IntHashSet_iterator(set);
 
-	while (SetIterator_hasNext(it)) 
+	while (IntHashSetIterator_hasNext(it)) 
 	{
-		src = SetIterator_next(it);
+		src = IntHashSetIterator_next(it);
 		if (src < 32)
 		{	
 			if (__execute(nfa, input+1, src)) return true;

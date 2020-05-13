@@ -7,7 +7,12 @@
 
 DFA make_first_dfa()
 {
-	DFA dfa = new_DFA(7);
+	/**
+	 * Exactly the string "csc173"
+	 */ 
+	DFA dfa = NULL;
+
+	dfa = new_DFA(7);
 	
 	DFA_set_transition(dfa, 0, 'c', 1);
 	DFA_set_transition(dfa, 1, 's', 2);
@@ -25,7 +30,8 @@ DFA make_second_dfa()
 	/**
 	 * Any string that starts with CAT
 	 */
-	DFA dfa = new_DFA(4);
+	DFA dfa = NULL;
+	dfa = new_DFA(4);
 
 	DFA_set_transition(dfa, 0, 'c', 1);
 	DFA_set_transition(dfa, 1, 'a', 2);
@@ -42,7 +48,8 @@ DFA make_third_dfa()
 	/**
 	 * Accepts an even number of 1's
 	 */
-	DFA dfa = new_DFA(2);
+	DFA dfa = NULL; 
+	dfa = new_DFA(2);
 	
 	DFA_set_transition(dfa, 0, '0', 1);
 	DFA_set_transition(dfa, 1, '1', 1);
@@ -56,7 +63,8 @@ DFA make_third_dfa()
 
 DFA make_fourth_dfa()
 {
-	DFA dfa = new_DFA(4);
+	DFA dfa = NULL;
+	dfa = new_DFA(4);
 
 	DFA_set_transition(dfa, 0, '0', 1);
 	DFA_set_transition(dfa, 1, '0', 0);
@@ -76,7 +84,8 @@ DFA make_fourth_dfa()
 
 NFA make_first_nfa()
 {
-	NFA nfa = new_NFA(5);
+	NFA nfa = NULL;
+	nfa = new_NFA(5);
 	
 	NFA_add_transition(nfa, 0, 'c', 0);
     	NFA_add_transition(nfa, 0, 'c', 1);
@@ -92,7 +101,8 @@ NFA make_first_nfa()
 NFA make_second_nfa()
 {
 
-	NFA nfa = new_NFA(5);
+	NFA nfa = NULL;
+	nfa = new_NFA(5);
 	
 	NFA_add_transition(nfa, 0, 'c', 0);
     	NFA_add_transition(nfa, 0, 'c', 1);
