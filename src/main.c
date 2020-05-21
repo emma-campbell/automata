@@ -45,7 +45,7 @@ DFA make_second_dfa()
 DFA make_third_dfa()
 {
 	/**
-	 * Accepts an even number of 1's
+	 * Accepts an even number of 0's
 	 */
 	DFA dfa = NULL;
 	dfa = new_DFA(2);
@@ -61,6 +61,9 @@ DFA make_third_dfa()
 
 DFA make_fourth_dfa()
 {
+	/**
+	 * Accepts an even number of both 0's and 1's
+	 */
 	DFA dfa = NULL;
 	dfa = new_DFA(4);
 
@@ -82,6 +85,9 @@ DFA make_fourth_dfa()
 
 NFA make_first_nfa()
 {
+	/**
+	 * Accepts strings ending in code
+	 */
 	NFA nfa = NULL;
 	nfa = new_NFA(5);
 
@@ -99,6 +105,9 @@ NFA make_first_nfa()
 NFA make_second_nfa()
 {
 
+	/**
+	 * Accepts strings containing code
+	 */
 	NFA nfa = NULL;
 	nfa = new_NFA(5);
 
@@ -116,6 +125,9 @@ NFA make_second_nfa()
 
 NFA make_third_nfa()
 {
+	/**
+	 * Accepts strings that AREN'T partial anagrams of washington
+	 */
 	NFA nfa = new_NFA(20);
 	NFA_add_transition_all(nfa, 0, 0);
 	NFA_add_transition_all(nfa, 1, 1);
@@ -154,6 +166,11 @@ NFA make_third_nfa()
 	return nfa;
 }
 
+/**
+ * @brief Test the DFA against the given input
+ * 
+ * @param d pointer to the dfa
+ */
 void test_dfa(DFA d)
 {
 	char input[256];
@@ -184,6 +201,11 @@ void test_dfa(DFA d)
 	DFA_free(d);
 }
 
+/**
+ * @brief Test the NFA against the given input
+ * 
+ * @param n Pointer to the nfa
+ */
 void test_nfa(NFA n)
 {
 	char input[256];
@@ -214,6 +236,12 @@ void test_nfa(NFA n)
 	NFA_free(n);
 }
 
+/**
+ * @brief Tests the washington NFA, since it accepts strings that aren't	
+ * 		  partial anagrams, so just switches the print statement.
+ * 
+ * @param n Pointer to the NFA
+ */
 void test_washington(NFA n)
 {
 	char input[256];
