@@ -81,6 +81,21 @@ void NFA_add_transition_all(NFA nfa, int src, int dst)
 	}
 }
 
+void NFA_add_transition_all_except(NFA nfa, int src, int dst, char except) 
+{
+	for (int i=0; i<128; i++)
+	{
+		if (i != except)
+		{
+			if (Set_isEmpty(*(nfa->transitions[src]+i)))
+			{
+				IntHashSet_insert(*(nfa->transitions[src]+i), dst);
+			}
+		}
+	}
+}
+
+
 void NFA_set_accepting(NFA nfa, int state)
 {
 	if (!BitSet_lookup(nfa->accepting, state))

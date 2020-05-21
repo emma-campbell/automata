@@ -11,7 +11,7 @@ The task at hand is to write out some DFA's that recognize
 and some NFA's that recognize
 * Strings ending in `code`
 * Strings containing `code`
-* strings with more than one `a`, `g`, `h`, `i`, `o`, `s`, `t`,or `w` and more than two `n`'s
+* strings with more than one `a`, `g`, `h`, `i`, `o`, `s`, `t`,or `w`, or more than two `n`'s
 
 To round it all off, let's make a function that takes an instance of an NFA and returns an instance of a DFA that is equivalent to the original NFA, _meaning it accepts the same language_.
 
