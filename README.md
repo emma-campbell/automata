@@ -17,7 +17,7 @@ To round it all off, let's make a function that takes an instance of an NFA and 
 
 # Build Instructions
 
-<img align="right" width="56%" src="https://raw.githubusercontent.com/emma-campbell/automata/master/usage.svg?sanitize=true">
+<img align="right" width="56%" src="https://raw.githubusercontent.com/emma-campbell/automata/master/blob/usage.svg">
 
 As long as you have `make` installed on your system, all you need to do is run
 
