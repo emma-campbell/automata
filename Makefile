@@ -51,7 +51,7 @@ all: $(BUILD_PATHS) $(PATHB)$(TARGET)
 
 $(PATHB)$(TARGET): $(OBJS)
 	$(SHOW_CC) $@
-	$(SILENCE) $(LINK) -o $@ $^
+	$(SILENCE) $(LINK) -o $@ $^ -lm
 
 # ##########################################################################
 # Testing Rules
