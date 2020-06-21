@@ -1,3 +1,7 @@
+/**
+ * file: transformer.c
+ * author: Emma Campbell
+ */
 
 // .-. . . .-. .   . . .-. .-. .-. 
 //  |  |\| |   |   | | |  )|-  `-. 
@@ -71,10 +75,12 @@ int index(LinkedList list, IntHashSet set)
     {
         if (IntHashSet_equals(LinkedListIterator_next(it), set))
         {
+	    free(it);
             return indexState;
         }
         indexState++;
     }
+    free(it);
     return indexState;
 }
 
@@ -94,6 +100,7 @@ int size(LinkedList list)
         LinkedListIterator_next(it);
         size++;
     }
+    free(it);
     return size;
 }
 
@@ -149,6 +156,8 @@ DFA NFA_to_DFA(NFA nfa)
             }
         }
 
+	free(it);
+
         for (int i = 0; i < 128; i++) 
         {
             if (!contains(finalStates, unionSet))
@@ -179,7 +188,10 @@ DFA NFA_to_DFA(NFA nfa)
                 DFA_set_accepting(dfa, index(finalStates, currSet));
             }
         }
+    	free(itSet);
     }
+
+    free(it_accepting);
 
     return dfa;
 }

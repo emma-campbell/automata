@@ -193,7 +193,8 @@ struct LinkedListIterator {
  * Don't forget to free() this when you're done iterating.
  */
 LinkedListIterator LinkedList_iterator(const LinkedList this) {
-	LinkedListIterator iterator = (LinkedListIterator)malloc(sizeof(struct LinkedListIterator));
+	LinkedListIterator iterator;
+       	iterator = (LinkedListIterator)malloc(sizeof(struct LinkedListIterator));
 	iterator->next = this->first;
 	return iterator;
 }

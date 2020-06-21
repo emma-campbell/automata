@@ -1,446 +1,317 @@
-==30730== Memcheck, a memory error detector
-==30730== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
-==30730== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
-==30730== Command: ./auto
-==30730== Parent PID: 30729
-==30730== 
-==30730== 
-==30730== HEAP SUMMARY:
-==30730==     in use at exit: 1,099,631,376 bytes in 1,061,710 blocks
-==30730==   total heap usage: 1,072,956 allocs, 11,246 frees, 1,100,277,864 bytes allocated
-==30730== 
-==30730== 8 bytes in 1 blocks are definitely lost in loss record 7 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403871: NFA_to_DFA (transformer.c:167)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 8 bytes in 1 blocks are definitely lost in loss record 8 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x4038D3: NFA_to_DFA (transformer.c:179)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 8 bytes in 1 blocks are definitely lost in loss record 9 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403871: NFA_to_DFA (transformer.c:167)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 8 bytes in 1 blocks are definitely lost in loss record 10 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x4038D3: NFA_to_DFA (transformer.c:179)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 8 bytes in 1 blocks are definitely lost in loss record 11 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403871: NFA_to_DFA (transformer.c:167)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 8 bytes in 1 blocks are definitely lost in loss record 12 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x4038D3: NFA_to_DFA (transformer.c:179)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 16 bytes in 1 blocks are definitely lost in loss record 45 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401792: new_LinkedList (LinkedList.c:34)
-==30730==    by 0x403670: NFA_to_DFA (transformer.c:114)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 16 bytes in 1 blocks are definitely lost in loss record 46 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401792: new_LinkedList (LinkedList.c:34)
-==30730==    by 0x403670: NFA_to_DFA (transformer.c:114)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 16 bytes in 1 blocks are definitely lost in loss record 47 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401792: new_LinkedList (LinkedList.c:34)
-==30730==    by 0x403670: NFA_to_DFA (transformer.c:114)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 24 bytes in 1 blocks are definitely lost in loss record 54 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x40332D: main (main.c:303)
-==30730== 
-==30730== 24 bytes in 1 blocks are definitely lost in loss record 55 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x40332D: main (main.c:303)
-==30730== 
-==30730== 24 bytes in 1 blocks are definitely lost in loss record 56 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x40332D: main (main.c:303)
-==30730== 
-==30730== 24 bytes in 1 blocks are definitely lost in loss record 57 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x403351: main (main.c:308)
-==30730== 
-==30730== 24 bytes in 1 blocks are definitely lost in loss record 58 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x403351: main (main.c:308)
-==30730== 
-==30730== 24 bytes in 1 blocks are definitely lost in loss record 59 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x4031F9: test_washington (main.c:259)
-==30730==    by 0x403375: main (main.c:312)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 64 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x40332D: main (main.c:303)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 65 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x40332D: main (main.c:303)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 66 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x40166F: __execute (nfa.c:121)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x40332D: main (main.c:303)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 67 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x403351: main (main.c:308)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 68 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x403351: main (main.c:308)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 69 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x403351: main (main.c:308)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 70 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x403351: main (main.c:308)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 71 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730==    by 0x403351: main (main.c:308)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 72 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x403120: test_nfa (main.c:223)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 73 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x40166F: __execute (nfa.c:121)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730== 
-==30730== 48 bytes in 2 blocks are definitely lost in loss record 74 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x4016FF: __execute (nfa.c:141)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x4031F9: test_washington (main.c:259)
-==30730==    by 0x403375: main (main.c:312)
-==30730== 
-==30730== 72 bytes in 3 blocks are definitely lost in loss record 75 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x40166F: __execute (nfa.c:121)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x401734: __execute (nfa.c:148)
-==30730==    by 0x40177E: NFA_execute (nfa.c:156)
-==30730==    by 0x4031F9: test_washington (main.c:259)
-==30730==    by 0x403375: main (main.c:312)
-==30730== 
-==30730== 72 bytes in 3 blocks are definitely lost in loss record 76 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x40372D: NFA_to_DFA (transformer.c:137)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 72 bytes in 3 blocks are definitely lost in loss record 77 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x403893: NFA_to_DFA (transformer.c:172)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 120 bytes in 5 blocks are definitely lost in loss record 82 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x40372D: NFA_to_DFA (transformer.c:137)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 120 bytes in 5 blocks are definitely lost in loss record 83 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x403893: NFA_to_DFA (transformer.c:172)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 120 bytes in 5 blocks are definitely lost in loss record 84 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x40372D: NFA_to_DFA (transformer.c:137)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 120 bytes in 5 blocks are definitely lost in loss record 85 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4020FA: IntHashSet_iterator (IntHashSet.c:243)
-==30730==    by 0x403893: NFA_to_DFA (transformer.c:172)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 280 (24 direct, 256 indirect) bytes in 1 blocks are definitely lost in loss record 93 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
-==30730==    by 0x40369E: NFA_to_DFA (transformer.c:118)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 280 (24 direct, 256 indirect) bytes in 1 blocks are definitely lost in loss record 94 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
-==30730==    by 0x40369E: NFA_to_DFA (transformer.c:118)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 1,128 (24 direct, 1,104 indirect) bytes in 1 blocks are definitely lost in loss record 98 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
-==30730==    by 0x403705: NFA_to_DFA (transformer.c:132)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 1,128 (24 direct, 1,104 indirect) bytes in 1 blocks are definitely lost in loss record 99 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
-==30730==    by 0x403705: NFA_to_DFA (transformer.c:132)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 1,240 (24 direct, 1,216 indirect) bytes in 1 blocks are definitely lost in loss record 100 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
-==30730==    by 0x403705: NFA_to_DFA (transformer.c:132)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 3,072 bytes in 384 blocks are definitely lost in loss record 116 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x40380F: NFA_to_DFA (transformer.c:160)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 3,072 bytes in 384 blocks are definitely lost in loss record 117 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x403825: NFA_to_DFA (transformer.c:161)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 4,848 (16 direct, 4,832 indirect) bytes in 1 blocks are definitely lost in loss record 118 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401792: new_LinkedList (LinkedList.c:34)
-==30730==    by 0x403662: NFA_to_DFA (transformer.c:113)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 4,848 (16 direct, 4,832 indirect) bytes in 1 blocks are definitely lost in loss record 119 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401792: new_LinkedList (LinkedList.c:34)
-==30730==    by 0x403662: NFA_to_DFA (transformer.c:113)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 5,120 bytes in 640 blocks are definitely lost in loss record 124 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x40380F: NFA_to_DFA (transformer.c:160)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 5,120 bytes in 640 blocks are definitely lost in loss record 125 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x403825: NFA_to_DFA (transformer.c:161)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 5,120 bytes in 640 blocks are definitely lost in loss record 126 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x40380F: NFA_to_DFA (transformer.c:160)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 5,120 bytes in 640 blocks are definitely lost in loss record 127 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401B7B: LinkedList_iterator (LinkedList.c:196)
-==30730==    by 0x403578: index (transformer.c:67)
-==30730==    by 0x403825: NFA_to_DFA (transformer.c:161)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 8,192 bytes in 8 blocks are possibly lost in loss record 128 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x4039AC: new_DFA (dfa.c:35)
-==30730==    by 0x403654: NFA_to_DFA (transformer.c:111)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 33,056 (24 direct, 33,032 indirect) bytes in 1 blocks are definitely lost in loss record 136 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x403923: new_DFA (dfa.c:25)
-==30730==    by 0x403654: NFA_to_DFA (transformer.c:111)
-==30730==    by 0x4033B6: main (main.c:317)
-==30730== 
-==30730== 33,056 (24 direct, 33,032 indirect) bytes in 1 blocks are definitely lost in loss record 137 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x403923: new_DFA (dfa.c:25)
-==30730==    by 0x403654: NFA_to_DFA (transformer.c:111)
-==30730==    by 0x403418: main (main.c:323)
-==30730== 
-==30730== 48,272 (32 direct, 48,240 indirect) bytes in 1 blocks are definitely lost in loss record 138 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401233: new_NFA (nfa.c:19)
-==30730==    by 0x402B1C: make_first_nfa (main.c:92)
-==30730==    by 0x403389: main (main.c:315)
-==30730== 
-==30730== 50,320 (32 direct, 50,288 indirect) bytes in 1 blocks are definitely lost in loss record 139 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401233: new_NFA (nfa.c:19)
-==30730==    by 0x402BEE: make_second_nfa (main.c:112)
-==30730==    by 0x4033EB: main (main.c:321)
-==30730== 
-==30730== 514,552 (32 direct, 514,520 indirect) bytes in 1 blocks are definitely lost in loss record 142 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401233: new_NFA (nfa.c:19)
-==30730==    by 0x402CCE: make_third_nfa (main.c:131)
-==30730==    by 0x40344D: main (main.c:327)
-==30730== 
-==30730== 8,388,632 (24 direct, 8,388,608 indirect) bytes in 1 blocks are definitely lost in loss record 146 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
-==30730==    by 0x40369E: NFA_to_DFA (transformer.c:118)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 8,391,184 (16 direct, 8,391,168 indirect) bytes in 1 blocks are definitely lost in loss record 147 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x401792: new_LinkedList (LinkedList.c:34)
-==30730==    by 0x403662: NFA_to_DFA (transformer.c:113)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== 1,082,122,272 (24 direct, 1,082,122,248 indirect) bytes in 1 blocks are definitely lost in loss record 149 of 149
-==30730==    at 0x483880B: malloc (vg_replace_malloc.c:309)
-==30730==    by 0x403923: new_DFA (dfa.c:25)
-==30730==    by 0x403654: NFA_to_DFA (transformer.c:111)
-==30730==    by 0x40347A: main (main.c:329)
-==30730== 
-==30730== LEAK SUMMARY:
-==30730==    definitely lost: 28,448 bytes in 3,409 blocks
-==30730==    indirectly lost: 1,099,594,736 bytes in 1,058,293 blocks
-==30730==      possibly lost: 8,192 bytes in 8 blocks
-==30730==    still reachable: 0 bytes in 0 blocks
-==30730==         suppressed: 0 bytes in 0 blocks
-==30730== 
-==30730== For lists of detected and suppressed errors, rerun with: -s
-==30730== ERROR SUMMARY: 55 errors from 55 contexts (suppressed: 0 from 0)
+==31555== Memcheck, a memory error detector
+==31555== Copyright (C) 2002-2017, and GNU GPL'd, by Julian Seward et al.
+==31555== Using Valgrind-3.15.0 and LibVEX; rerun with -h for copyright info
+==31555== Command: ./auto
+==31555== Parent PID: 31554
+==31555== 
+==31555== Invalid read of size 4
+==31555==    at 0x401D18: IntHashSet_free (IntHashSet.c:66)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Address 0x4d0e3a0 is 0 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== Invalid read of size 8
+==31555==    at 0x401CCF: IntHashSet_free (IntHashSet.c:67)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Address 0x4d0e3a8 is 8 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== Invalid read of size 8
+==31555==    at 0x401D23: IntHashSet_free (IntHashSet.c:75)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Address 0x4d0e3a8 is 8 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== Invalid free() / delete / delete[] / realloc()
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401D3A: IntHashSet_free (IntHashSet.c:77)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Address 0x4d0e3a0 is 0 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== Invalid read of size 4
+==31555==    at 0x401D18: IntHashSet_free (IntHashSet.c:66)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Address 0x4d65e90 is 0 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== Invalid read of size 8
+==31555==    at 0x401CCF: IntHashSet_free (IntHashSet.c:67)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Address 0x4d65e98 is 8 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== Invalid read of size 8
+==31555==    at 0x401D23: IntHashSet_free (IntHashSet.c:75)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Address 0x4d65e98 is 8 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== Invalid free() / delete / delete[] / realloc()
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401D3A: IntHashSet_free (IntHashSet.c:77)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Address 0x4d65e90 is 0 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x403418: main (main.c:323)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== Invalid read of size 4
+==31555==    at 0x401D18: IntHashSet_free (IntHashSet.c:66)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Address 0x4966cb80 is 0 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== Invalid read of size 8
+==31555==    at 0x401CCF: IntHashSet_free (IntHashSet.c:67)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Address 0x4966cb88 is 8 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== Invalid read of size 8
+==31555==    at 0x401D23: IntHashSet_free (IntHashSet.c:75)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Address 0x4966cb88 is 8 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== Invalid free() / delete / delete[] / realloc()
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401D3A: IntHashSet_free (IntHashSet.c:77)
+==31555==    by 0x403980: NFA_to_DFA (transformer.c:197)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Address 0x4966cb80 is 0 bytes inside a block of size 24 free'd
+==31555==    at 0x4839A0C: free (vg_replace_malloc.c:540)
+==31555==    by 0x401850: LinkedList_free (LinkedList.c:60)
+==31555==    by 0x403963: NFA_to_DFA (transformer.c:195)
+==31555==    by 0x40347A: main (main.c:329)
+==31555==  Block was alloc'd at
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== 
+==31555== HEAP SUMMARY:
+==31555==     in use at exit: 1,099,598,864 bytes in 1,058,255 blocks
+==31555==   total heap usage: 1,072,925 allocs, 14,673 frees, 1,100,277,120 bytes allocated
+==31555== 
+==31555== 272 (256 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 48 of 98
+==31555==    at 0x483AB1A: calloc (vg_replace_malloc.c:762)
+==31555==    by 0x401C61: new_IntHashSet (IntHashSet.c:50)
+==31555==    by 0x4036AB: NFA_to_DFA (transformer.c:124)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== 272 (256 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 49 of 98
+==31555==    at 0x483AB1A: calloc (vg_replace_malloc.c:762)
+==31555==    by 0x401C61: new_IntHashSet (IntHashSet.c:50)
+==31555==    by 0x4036AB: NFA_to_DFA (transformer.c:124)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== 280 (24 direct, 256 indirect) bytes in 1 blocks are definitely lost in loss record 50 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x4036C2: NFA_to_DFA (transformer.c:125)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== 280 (24 direct, 256 indirect) bytes in 1 blocks are definitely lost in loss record 51 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x4036C2: NFA_to_DFA (transformer.c:125)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== 1,128 (24 direct, 1,104 indirect) bytes in 1 blocks are definitely lost in loss record 56 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== 1,128 (24 direct, 1,104 indirect) bytes in 1 blocks are definitely lost in loss record 57 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== 1,184 (1,024 direct, 160 indirect) bytes in 1 blocks are definitely lost in loss record 58 of 98
+==31555==    at 0x483AB1A: calloc (vg_replace_malloc.c:762)
+==31555==    by 0x401C61: new_IntHashSet (IntHashSet.c:50)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== 1,240 (24 direct, 1,216 indirect) bytes in 1 blocks are definitely lost in loss record 59 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== 3,216 (3,072 direct, 144 indirect) bytes in 3 blocks are definitely lost in loss record 74 of 98
+==31555==    at 0x483AB1A: calloc (vg_replace_malloc.c:762)
+==31555==    by 0x401C61: new_IntHashSet (IntHashSet.c:50)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== 3,216 (3,072 direct, 144 indirect) bytes in 3 blocks are definitely lost in loss record 75 of 98
+==31555==    at 0x483AB1A: calloc (vg_replace_malloc.c:762)
+==31555==    by 0x401C61: new_IntHashSet (IntHashSet.c:50)
+==31555==    by 0x403729: NFA_to_DFA (transformer.c:139)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== 8,192 bytes in 8 blocks are possibly lost in loss record 78 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x403A31: new_DFA (dfa.c:35)
+==31555==    by 0x403678: NFA_to_DFA (transformer.c:118)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== 33,056 (24 direct, 33,032 indirect) bytes in 1 blocks are definitely lost in loss record 86 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x4039A8: new_DFA (dfa.c:25)
+==31555==    by 0x403678: NFA_to_DFA (transformer.c:118)
+==31555==    by 0x4033B6: main (main.c:317)
+==31555== 
+==31555== 33,056 (24 direct, 33,032 indirect) bytes in 1 blocks are definitely lost in loss record 87 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x4039A8: new_DFA (dfa.c:25)
+==31555==    by 0x403678: NFA_to_DFA (transformer.c:118)
+==31555==    by 0x403418: main (main.c:323)
+==31555== 
+==31555== 48,208 (32 direct, 48,176 indirect) bytes in 1 blocks are definitely lost in loss record 88 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401233: new_NFA (nfa.c:19)
+==31555==    by 0x402B1C: make_first_nfa (main.c:92)
+==31555==    by 0x403389: main (main.c:315)
+==31555== 
+==31555== 50,240 (32 direct, 50,208 indirect) bytes in 1 blocks are definitely lost in loss record 89 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401233: new_NFA (nfa.c:19)
+==31555==    by 0x402BEE: make_second_nfa (main.c:112)
+==31555==    by 0x4033EB: main (main.c:321)
+==31555== 
+==31555== 514,368 (32 direct, 514,336 indirect) bytes in 1 blocks are definitely lost in loss record 92 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401233: new_NFA (nfa.c:19)
+==31555==    by 0x402CCE: make_third_nfa (main.c:131)
+==31555==    by 0x40344D: main (main.c:327)
+==31555== 
+==31555== 8,388,624 (8,388,608 direct, 16 indirect) bytes in 1 blocks are definitely lost in loss record 95 of 98
+==31555==    at 0x483AB1A: calloc (vg_replace_malloc.c:762)
+==31555==    by 0x401C61: new_IntHashSet (IntHashSet.c:50)
+==31555==    by 0x4036AB: NFA_to_DFA (transformer.c:124)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== 8,388,632 (24 direct, 8,388,608 indirect) bytes in 1 blocks are definitely lost in loss record 96 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x401C34: new_IntHashSet (IntHashSet.c:45)
+==31555==    by 0x4036C2: NFA_to_DFA (transformer.c:125)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== 1,082,122,272 (24 direct, 1,082,122,248 indirect) bytes in 1 blocks are definitely lost in loss record 98 of 98
+==31555==    at 0x483880B: malloc (vg_replace_malloc.c:309)
+==31555==    by 0x4039A8: new_DFA (dfa.c:25)
+==31555==    by 0x403678: NFA_to_DFA (transformer.c:118)
+==31555==    by 0x40347A: main (main.c:329)
+==31555== 
+==31555== LEAK SUMMARY:
+==31555==    definitely lost: 8,396,600 bytes in 22 blocks
+==31555==    indirectly lost: 1,091,194,072 bytes in 1,058,225 blocks
+==31555==      possibly lost: 8,192 bytes in 8 blocks
+==31555==    still reachable: 0 bytes in 0 blocks
+==31555==         suppressed: 0 bytes in 0 blocks
+==31555== 
+==31555== For lists of detected and suppressed errors, rerun with: -s
+==31555== ERROR SUMMARY: 796 errors from 31 contexts (suppressed: 0 from 0)
