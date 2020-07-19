@@ -5,11 +5,11 @@
 #include <stdio.h>
 #include <string.h>
 
+/**
+ * @brief Create the automata that recognizes the string "csc173"
+ */
 DFA make_first_dfa()
 {
-	/**
-	 * Exactly the string "csc173"
-	 */
 	DFA dfa = NULL;
 
 	dfa = new_DFA(7);
@@ -25,6 +25,9 @@ DFA make_first_dfa()
 	return dfa;
 }
 
+/**
+ * @brief Recognize any string that starts with 'cat'	
+ */
 DFA make_second_dfa()
 {
 	/**
@@ -42,11 +45,11 @@ DFA make_second_dfa()
 	return dfa;
 }
 
+/**
+ * @brief Recognize any string with an even number of 0's
+ */
 DFA make_third_dfa()
 {
-	/**
-	 * Accepts an even number of 0's
-	 */
 	DFA dfa = NULL;
 	dfa = new_DFA(2);
 
@@ -59,11 +62,11 @@ DFA make_third_dfa()
 	return dfa;
 }
 
+/**
+ * @brief Recognize any string with an even number of 0's and 1's
+ */
 DFA make_fourth_dfa()
 {
-	/**
-	 * Accepts an even number of both 0's and 1's
-	 */
 	DFA dfa = NULL;
 	dfa = new_DFA(4);
 
@@ -83,11 +86,11 @@ DFA make_fourth_dfa()
 	return dfa;
 }
 
+/**
+ * @brief Recognize any string ending in 'code'
+ */
 NFA make_first_nfa()
 {
-	/**
-	 * Accepts strings ending in code
-	 */
 	NFA nfa = NULL;
 	nfa = new_NFA(5);
 
@@ -102,12 +105,11 @@ NFA make_first_nfa()
 	return nfa;
 }
 
+/**
+ * @brief Recognize any string containing 'code'
+ */
 NFA make_second_nfa()
 {
-
-	/**
-	 * Accepts strings containing code
-	 */
 	NFA nfa = NULL;
 	nfa = new_NFA(5);
 
@@ -123,11 +125,11 @@ NFA make_second_nfa()
 	return nfa;
 }
 
+/**
+ * @brief Recognize any string that isn't a partial anagram of washington
+ */
 NFA make_third_nfa()
 {
-	/**
-	 * Accepts strings that AREN'T partial anagrams of washington
-	 */
 	NFA nfa = new_NFA(20);
 	NFA_add_transition_all(nfa, 0, 0);
 	NFA_add_transition_all(nfa, 1, 1);
